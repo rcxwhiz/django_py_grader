@@ -1,6 +1,6 @@
 import sqlite3
 
-from server.dao import *
+from old_code.server.dao import *
 
 
 class AssignmentsDao:

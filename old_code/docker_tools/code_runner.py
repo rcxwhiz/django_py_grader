@@ -4,8 +4,8 @@ import subprocess
 import sys
 from typing import List
 
-from docker_tools import code_timeout, docker_image_name
-from docker_tools.docker_exception import DockerException
+from old_code.docker_tools import code_timeout, docker_image_name
+from old_code.docker_tools.docker_exception import DockerException
 
 
 class CodeRunner:

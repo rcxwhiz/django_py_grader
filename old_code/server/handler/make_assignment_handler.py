@@ -1,6 +1,6 @@
-from server.dao import AssignmentsDao, TestCasesDao
-from common.request import MakeAssigmentRequest
-from common.response.make_assignment_response import MakeAssignmentResponse
+from old_code.server.dao import AssignmentsDao, TestCasesDao
+from old_code.common import MakeAssigmentRequest
+from old_code.common.response import MakeAssignmentResponse
 
 
 class MakeAssignmentHandler:

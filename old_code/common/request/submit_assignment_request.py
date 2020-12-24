@@ -1,4 +1,4 @@
-from common.model.submission import Submission
+from old_code.common.model.submission import Submission
 
 
 class SubmitAssignmentRequest:

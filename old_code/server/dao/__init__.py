@@ -54,13 +54,13 @@ test_case_stdin_column = 'test_case_stdin'
 test_case_argv_column = 'test_case_argv'
 test_case_output_column = 'test_case_output'
 
-from server.dao.assignments_dao import AssignmentsDao
-from server.dao.netid_dao import NetIdDao
-from server.dao.number_submissions_dao import NumberSubmissionsDao
-from server.dao.submission_case_results_dao import SubmissionCaseResultsDao
-from server.dao.submission_results_dao import SubmissionResultsDao
-from server.dao.submissions_dao import SubmissionsDao
-from server.dao.test_cases_dao import TestCasesDao
+from old_code.server.dao import AssignmentsDao
+from old_code.server.dao.netid_dao import NetIdDao
+from old_code.server.dao import NumberSubmissionsDao
+from old_code.server.dao import SubmissionCaseResultsDao
+from old_code.server.dao import SubmissionResultsDao
+from old_code.server.dao import SubmissionsDao
+from old_code.server.dao import TestCasesDao
 
 
 # reset all tables

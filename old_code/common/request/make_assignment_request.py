@@ -1,4 +1,4 @@
-from common.model.assignment import Assignment
+from old_code.common.model.assignment import Assignment
 
 
 class MakeAssigmentRequest:

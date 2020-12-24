@@ -1,4 +1,4 @@
-from common.model.test_case import TestCase
+from old_code.common.model.test_case import TestCase
 
 
 class MakeTestCaseRequest:

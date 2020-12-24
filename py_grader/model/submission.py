@@ -1,4 +1,4 @@
-from common.model.net_id import NetId
+from py_grader.model.net_id import NetId
 
 
 class Submission:

@@ -1,4 +1,4 @@
-from common.model.net_id import NetId
+from old_code.common import NetId
 
 
 class SubmissionResult:
