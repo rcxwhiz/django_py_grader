@@ -2,7 +2,7 @@ database_path = 'py_grader.db'
 
 # == assignments table ==
 assignments_table = 'assignments'
-assignment_name_column = 'assignment_name'
+assignment_name_column = 'assignment'
 assignment_key_code_column = 'key_code'
 assignment_open_time_column = 'open_time'
 assignment_close_time_column = 'close_time'

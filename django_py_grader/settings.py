@@ -29,6 +29,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'py_grader.apps.PyGraderConfig',
 	'polls.apps.PollsConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -36,7 +37,6 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'py_grader.apps.PyGraderConfig',
 ]
 
 MIDDLEWARE = [
