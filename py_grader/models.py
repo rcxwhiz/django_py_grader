@@ -46,6 +46,7 @@ class TestCase(models.Model):
 class SubmissionCaseResult(models.Model):
 	submission = models.ForeignKey(Submission, on_delete=models.CASCADE, verbose_name='Submission')
 	test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE, verbose_name='Test Case')
+	test_case_number = models.IntegerField(verbose_name='Test Case Number')
 	submission_output = models.TextField(verbose_name='Submission Output')
 	expected_output = models.TextField(verbose_name='Expected Output')
 	correct = models.BooleanField(verbose_name='Correct')
