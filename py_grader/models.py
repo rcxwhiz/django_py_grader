@@ -36,20 +36,21 @@ class NumberSubmissions(models.Model):
 	number_submissions = models.IntegerField(verbose_name='Number Submissions', default=0)
 
 
+class TestCase(models.Model):
+	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, verbose_name='Assignment')
+	test_case_number = models.IntegerField(verbose_name='Test Case Number')
+	test_case_input = models.TextField(verbose_name='Test Case Input')
+	test_case_output = models.TextField(verbose_name='Test Case Output')
+
+
 class SubmissionCaseResult(models.Model):
 	submission = models.ForeignKey(Submission, on_delete=models.CASCADE, verbose_name='Submission')
-	test_case_number = models.IntegerField(verbose_name='Test Case Number')
+	test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE, verbose_name='Test Case')
 	submission_output = models.TextField(verbose_name='Submission Output')
+	expected_output = models.TextField(verbose_name='Expected Output')
 	correct = models.BooleanField(verbose_name='Correct')
 
 
 class SubmissionResult(models.Model):
 	submission = models.ForeignKey(Submission, on_delete=models.CASCADE, verbose_name='Submission')
 	submission_grade = models.FloatField(verbose_name='Submission Grade')
-
-
-class TestCase(models.Model):
-	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, verbose_name='Assignment')
-	test_case_number = models.IntegerField(verbose_name='Test Case Number')
-	test_case_input = models.TextField(verbose_name='Test Case Input')
-	test_case_output = models.TextField(verbose_name='Test Case Output')
