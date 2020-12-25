@@ -24,7 +24,7 @@ urlpatterns = [
 	path('', views.index, name='index'),
 
 	path('submit/<str:assignment_name>/', views.submit, name='submit'),
-	path('create', views.create, name='create'),
 	path('view_results/<str:assignment_name>', views.view_results, name='view_results'),
-	path('view_result/<int:submission_id>', views.view_result, name='view_result')
+	path('view_result/<int:submission_id>', views.view_result, name='view_result'),
+	path('create', views.create, name='create')
 ]

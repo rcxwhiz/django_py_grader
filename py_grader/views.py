@@ -1,7 +1,9 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
+
+# TODO any of these pages that require redirection don't go to their thing after you log in
 
 
 # TODO this is a very temporary setup as well
@@ -21,23 +23,16 @@ def submit(request, assignment_name):
 
 
 def create(request):
-	if request.user.is_authenticated:
-		context = {
-		}
-		return render(request, 'py_grader/create.html', context)
-	else:
-		return HttpResponse(status=401)
+	return redirect('/admin/py_grader/assignment/add')
 
 
+@login_required(login_url='/admin')
 def view_results(request, assignment_name):
-	if request.user.is_authenticated:
-		assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
-		context = {
-			'assignment': assignment
-		}
-		return render(request, 'py_grader/view_results.html', context)
-	else:
-		return HttpResponse(status=401)
+	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+	context = {
+		'assignment': assignment
+	}
+	return render(request, 'py_grader/view_results.html', context)
 
 
 # TODO this is a very temporary mockup
