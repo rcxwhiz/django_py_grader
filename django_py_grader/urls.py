@@ -16,6 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from py_grader import views
+
 urlpatterns = [
 	path('admin/', admin.site.urls),
+
+	path('', views.index, name='index'),
+
+	path('submit/<str:assignment_name>/', views.submit, name='submit'),
+	path('create', views.create, name='create'),
+	path('view_results/<str:assignment_name>', views.view_results, name='view_results')
 ]
