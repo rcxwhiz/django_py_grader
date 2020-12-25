@@ -1,18 +1,31 @@
-from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
+
+from py_grader.models import Assignment
 
 
 def index(request):
-	return HttpResponse('This is the index page of the site bro')
+	context = {
+	}
+	return render(request, 'py_grader/index.html', context)
 
 
 def submit(request, assignment_name):
-	return HttpResponse(f'You\'re looking at assignment: {assignment_name}')
+	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+	context = {
+		'assignment': assignment.assignment_name
+	}
+	return render(request, 'py_grader/submit.html', context)
 
 
 def create(request):
-	return HttpResponse('You\'re looking at the page to create an assignment')
+	context = {
+	}
+	return render(request, 'py_grader/create.html', context)
 
 
 def view_results(request, assignment_name):
-	return HttpResponse(f'You\'re looking at the results for: {assignment_name}')
+	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+	context = {
+		'assignment': assignment.assignment_name
+	}
+	return render(request, 'py_grader/view_results.html', context)
