@@ -2,13 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    {% if assignment %}
-        <title>Submit: {{ assignment.assignment_name }}</title>
-    {% else %}
-        <title>Submit: Not Found</title>
-    {% endif %}
+    <title>Submit: {{ assignment.assignment_name }}</title>
 </head>
 <body>
+
+<h2 style="font-family:verdana,sans-serif">Submit Assignment: {{ assignment.assignment_name }}</h2>
+
+<!-- TODO need to update this all with django type stuff -->
+<form style="font-family:verdana,sans-serif" action="/action_page.php">
+  <label for="fname">NetID:</label>
+  <input type="text" id="fname" name="fname"><br><br>
+  <label for="myfile">Select Python file</label><br>
+  <input type="file" id="myfile" name="myfile"><br><br>
+  <input type="submit" value="Submit">
+</form>
+
+<p style="font-family:verdana,sans-serif">By pressing submit you will have your code run and tested. A grade will not necessarily be entered immediately.</p>
 
 </body>
 </html>
