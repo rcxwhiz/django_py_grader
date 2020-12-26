@@ -52,6 +52,12 @@ def view_assignment_results(request, assignment_name):
 	return render(request, 'py_grader/view_assignment_results.html', context)
 
 
+def view_any_submission_result(request):
+	context = {
+	}
+	return render(request, 'py_grader/view_any_submission_result.html', context)
+
+
 # TODO this is a very temporary mockup
 def view_submission_result(request, submission_id):
 	submission_result = get_object_or_404(SubmissionResult, submission=submission_id)

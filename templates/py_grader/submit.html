@@ -17,7 +17,7 @@
 
 <p>Choose an Assignment</p>
 <form action="/action_page.php">
-    <label for="cars">Assignment:    </label>
+    <label for="assignments">Assignment:    </label>
     <select name="assignment" id="assignments">
         {% for assignment in assignments %}
             <option value="{{ assignment.pk }}">{{ assignment.assignment_name }}</option>
@@ -26,8 +26,6 @@
     <input type="submit" value="Go">
 </form>
 
-<br>
-<br>
-
 </body>
+
 </html>
