@@ -24,6 +24,11 @@ class CreateAssignmentForm(forms.Form):
 			self.add_error('assignment_name', 'Assignment Name Already Used')
 		except Assignment.DoesNotExist:
 			pass
+		code = cleaned_data.get('key_source_code')
+		if not code.name.endswith('.py'):
+			self.add_error('key_source_code', 'Upload a .py File')
+		if code.size > 4e6:
+			self.add_error('key_source_code', 'File over 4 MB')
 		open_time = cleaned_data.get('open_time')
 		close_time = cleaned_data.get('close_time')
 		if open_time > close_time:
