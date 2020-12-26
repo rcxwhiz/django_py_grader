@@ -5,11 +5,7 @@ from django.contrib.auth.decorators import login_required
 from py_grader.forms import CreateAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
 
-# TODO any of these pages that require redirection don't go to their thing after you log in
 
-
-# TODO this is a very temporary setup as well
-# TODO I want to add a dropdown to this page that lets you choose an assignment to submit_assignment
 def index(request):
 	context = {
 	}
@@ -33,18 +29,12 @@ def submit_assignment(request, assignment_name):
 
 
 @login_required(login_url='/admin')
-def create_assignment(request):
-	if request.method == 'POST':
-		form = CreateAssignmentForm(request.POST, request.FILES)
-		if form.is_valid():
-			return HttpResponseRedirect('/')
-	else:
-		form = CreateAssignmentForm()
-
+def test_submit_assignment(request, assignment_name):
+	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
-		'form': form
+		'assignment': assignment
 	}
-	return render(request, 'py_grader/create_assignment.html', context)
+	return render(request, 'py_grader/test_submit_assignment.html', context)
 
 
 @login_required(login_url='/admin')
@@ -71,7 +61,6 @@ def view_any_submission_result(request):
 	return render(request, 'py_grader/view_any_submission_result.html', context)
 
 
-# TODO this is a very temporary mockup
 def view_submission_result(request, submission_id):
 	submission_result = get_object_or_404(SubmissionResult, submission=submission_id)
 	test_cases = TestCase.objects.order_by('test_case_number').filter(assignment=submission_result.submission.assignment.pk)
@@ -83,3 +72,31 @@ def view_submission_result(request, submission_id):
 		'submission_test_cases': submission_test_cases
 	}
 	return render(request, 'py_grader/view_submission_result.html', context)
+
+
+@login_required(login_url='/admin')
+def create_assignment(request):
+	if request.method == 'POST':
+		form = CreateAssignmentForm(request.POST, request.FILES)
+		if form.is_valid():
+			return HttpResponseRedirect('/')
+	else:
+		form = CreateAssignmentForm()
+
+	context = {
+		'form': form
+	}
+	return render(request, 'py_grader/create_assignment.html', context)
+
+
+@login_required(login_url='/admin')
+def manage_net_ids(request):
+	context = {
+	}
+	return render(request, 'py_grader/manage_net_ids.html', context)
+
+
+def grader_login(request):
+	context = {
+	}
+	return render(request, 'py_grader/grader_login.html', context)
