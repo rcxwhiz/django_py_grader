@@ -24,7 +24,9 @@ SECRET_KEY = 'd7yw=m7j7x_ouzhpq$_rxb0$$a8igqrz*pax7^o-9sq=gazilo'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+	'pygrader.joshbedwell.com'
+]
 
 # Application definition
 
