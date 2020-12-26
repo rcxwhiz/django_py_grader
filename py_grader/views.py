@@ -80,8 +80,8 @@ def create_assignment(request):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
-			messages.success(request, 'Assignment Successfully Created')
-			messages.info(request, 'Assignment Successfully Created')
+			# TODO something should happen here
+			print('TODO')
 
 	form = CreateAssignmentForm()
 	context = {
