@@ -37,5 +37,8 @@ urlpatterns = [
 
 	path('manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
 
-	path('grader_login/', views.grader_login, name='grader_login')
+	path('grader_login/', views.grader_login, name='grader_login'),
+
+	path('success/', views.success, name='success'),
+	path('failure/', views.failure, name='failure')
 ]

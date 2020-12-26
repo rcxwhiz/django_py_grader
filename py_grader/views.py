@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from py_grader.forms import CreateAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
@@ -79,10 +80,10 @@ def create_assignment(request):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
-			return HttpResponseRedirect('/')
-	else:
-		form = CreateAssignmentForm()
+			messages.success(request, 'Assignment Successfully Created')
+			messages.info(request, 'Assignment Successfully Created')
 
+	form = CreateAssignmentForm()
 	context = {
 		'form': form
 	}
@@ -100,3 +101,15 @@ def grader_login(request):
 	context = {
 	}
 	return render(request, 'py_grader/grader_login.html', context)
+
+
+def success(request):
+	context = {
+	}
+	return render(request, 'py_grader/success.html', context)
+
+
+def failure(request):
+	context = {
+	}
+	return render(request, 'py_grader/failure.html', context)

@@ -46,7 +46,7 @@ class SubmitAssignmentForm(forms.Form):
 
 
 class ViewSubmissionForm(forms.Form):
-	submission_number = forms.IntegerField(label='Submission ID', min=0)
+	submission_number = forms.IntegerField(label='Submission ID', min_value=0)
 
 
 class ViewAssignmentResultForm(forms.Form):
