@@ -102,7 +102,11 @@ def create_assignment(request):
 			except Exception as e:
 				return failure(request, 'create_assignment/', str(e))
 
-		return failure(request, 'create_assignment/', 'Invalid Form')
+		msgs = []
+		for key in form.errors.as_data():
+			for err in form.errors.as_data()[key]:
+				msgs.append(f'{key} - {err.message}')
+		return failure(request, 'create_assignment/', msgs)
 
 	form = CreateAssignmentForm()
 	context = {
@@ -132,9 +136,9 @@ def success(request, back_path, message):
 	return render(request, 'py_grader/success.html', context)
 
 
-def failure(request, back_path, message):
+def failure(request, back_path, errors):
 	context = {
 		'back_path': back_path,
-		'message': message
+		'errors': errors
 	}
 	return render(request, 'py_grader/failure.html', context)

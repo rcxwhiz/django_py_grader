@@ -13,7 +13,12 @@
 
     <br>
 
-    <p>Message: {{ message }}</p>
+    <p>Errors:</p>
+    <ul>
+        {% for error in errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
 
     <br>
 
