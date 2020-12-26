@@ -7,19 +7,27 @@ from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult,
 
 
 # TODO this is a very temporary setup as well
-# TODO I want to add a dropdown to this page that lets you choose an assignment to submit
+# TODO I want to add a dropdown to this page that lets you choose an assignment to submit_assignment
 def index(request):
 	context = {
 	}
 	return render(request, 'py_grader/index.html', context)
 
 
-def submit(request, assignment_name):
+def submit(request):
+	assignments = Assignment.objects.order_by('close_time')
+	context = {
+		'assignments': assignments
+	}
+	return render(request, 'py_grader/submit.html', context)
+
+
+def submit_assignment(request, assignment_name):
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
 		'assignment': assignment
 	}
-	return render(request, 'py_grader/submit.html', context)
+	return render(request, 'py_grader/submit_assignment.html', context)
 
 
 def create(request):

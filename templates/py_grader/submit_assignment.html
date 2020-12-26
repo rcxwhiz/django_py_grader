@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Submit: {{ assignment.assignment_name }}</title>
+</head>
+
+<body>
+
+<h1>PyGrader</h1>
+<h1>Submit Assignment: {{ assignment.assignment_name }}</h1>
+
+<br>
+<br>
+
+<p>Submit an Assignment</p>
+<form action="/action_page.php">
+    <label for="fname">NetID:    </label>
+    <input type="text" id="fname" name="fname"><br><br>
+    <label for="myfile">Select your Python file</label><br><br>
+    <input type="file" id="myfile" name="myfile"><br><br>
+    <input type="submit" value="Submit">
+</form>
+
+<br>
+<br>
+
+<p>By pressing submit you will have your code run and tested. A grade will not necessarily be entered immediately.</p>
+
+</body>
+</html>
