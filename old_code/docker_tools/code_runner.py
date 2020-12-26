@@ -10,7 +10,7 @@ from old_code.docker_tools.docker_exception import DockerException
 
 class CodeRunner:
 	"""
-	Used to create docker environments and use them to run Python scripts in a safe and consistent environment
+	Used to create_assignment docker environments and use them to run Python scripts in a safe and consistent environment
 	"""
 	def __init__(self):
 		"""
@@ -93,7 +93,7 @@ class CodeRunner:
 
 	def _generate_docker_context(self) -> str:
 		"""
-		Generates an appropiate dockerfile and the runs it to create a docker image. Will add the python packages
+		Generates an appropiate dockerfile and the runs it to create_assignment a docker image. Will add the python packages
 		and copy the files that have been specified.
 
 		Returns:
@@ -119,7 +119,7 @@ class CodeRunner:
 		output = subprocess.check_output(['docker', 'build', '-t', docker_image_name, '.']).decode('utf-8')
 		context_id = re.search(r'Successfully built (.+)\n', output)[0]
 		if context_id is None:
-			raise DockerException('Could not create docker context')
+			raise DockerException('Could not create_assignment docker context')
 		return context_id
 
 

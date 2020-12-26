@@ -1,14 +1,33 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    {% if assignment %}
-        <title>View Results: {{ assignment.assignment_name }}</title>
-    {% else %}
-        <title>View Results: Not Found</title>
-    {% endif %}
+    <title>View Results</title>
 </head>
+
 <body>
+
+<h1>PyGrader</h1>
+<h1>View Results</h1>
+
+<br>
+<br>
+
+<p>Choose an Assignment</p>
+<form action="/action_page.php">
+    <label for="cars">Assignment:    </label>
+    <select name="assignment" id="assignments">
+        {% for assignment in assignments %}
+            <option value="{{ assignment.pk }}">{{ assignment.assignment_name }}</option>
+        {% endfor %}
+    </select><br><br>
+    <input type="submit" value="Go">
+</form>
+
+<br>
+<br>
 
 </body>
 </html>

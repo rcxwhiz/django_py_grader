@@ -30,21 +30,30 @@ def submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/submit_assignment.html', context)
 
 
-def create(request):
+def create_assignment(request):
 	return redirect('/admin/py_grader/assignment/add')
 
 
 @login_required(login_url='/admin')
-def view_results(request, assignment_name):
-	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+def view_results(request):
+	assignments = Assignment.objects.order_by('close_time')
 	context = {
-		'assignment': assignment
+		'assignments': assignments
 	}
 	return render(request, 'py_grader/view_results.html', context)
 
 
+@login_required(login_url='/admin')
+def view_assignment_results(request, assignment_name):
+	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+	context = {
+		'assignment': assignment
+	}
+	return render(request, 'py_grader/view_assignment_results.html', context)
+
+
 # TODO this is a very temporary mockup
-def view_result(request, submission_id):
+def view_submission_result(request, submission_id):
 	submission_result = get_object_or_404(SubmissionResult, submission=submission_id)
 	test_cases = TestCase.objects.order_by('test_case_number').filter(assignment=submission_result.submission.assignment.pk)
 	submission_test_cases = [SubmissionCaseResult.objects.get(submission=submission_result.submission.pk, test_case=case.pk) for case in test_cases]
@@ -54,4 +63,4 @@ def view_result(request, submission_id):
 		'test_cases': test_cases,
 		'submission_test_cases': submission_test_cases
 	}
-	return render(request, 'py_grader/view_result.html', context)
+	return render(request, 'py_grader/view_submission_result.html', context)

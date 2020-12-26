@@ -24,8 +24,8 @@ urlpatterns = [
 	path('', views.index, name='index'),
 
 	path('submit', views.submit, name='submit'),
-	path('submit_assignment/<str:assignment_name>/', views.submit_assignment, name='submit_assignment'),
-	path('view_results/<str:assignment_name>', views.view_results, name='view_results'),
-	path('view_result/<int:submission_id>', views.view_result, name='view_result'),
-	path('create', views.create, name='create')
+	path('submit/<str:assignment_name>/', views.submit_assignment, name='submit_assignment'),
+	path('view_assignment_results/<str:assignment_name>', views.view_assignment_results, name='view_assignment_results'),
+	path('view_submission_result/<int:submission_id>', views.view_submission_result, name='view_submission_result'),
+	path('create_assignment', views.create_assignment, name='create_assignment')
 ]
