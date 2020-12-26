@@ -58,4 +58,4 @@ class ViewAssignmentResultForm(forms.Form):
 
 
 class AddGradingMethodForm(forms.Form):
-	grading_method = forms.CharField(label='Grading Method', max_length=0)
+	grading_method = forms.CharField(label='Grading Method', max_length=255)

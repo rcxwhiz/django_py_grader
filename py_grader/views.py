@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -80,8 +80,9 @@ def create_assignment(request):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
-			# TODO something should happen here
-			print('TODO')
+			return success(request, 'create_assignment/', 'successfully created assignment')
+		else:
+			return failure(request, 'create_assignment/', 'something went wrong')
 
 	form = CreateAssignmentForm()
 	context = {
@@ -103,13 +104,17 @@ def grader_login(request):
 	return render(request, 'py_grader/grader_login.html', context)
 
 
-def success(request):
+def success(request, back_path, message):
 	context = {
+		'back_path': back_path,
+		'message': message
 	}
 	return render(request, 'py_grader/success.html', context)
 
 
-def failure(request):
+def failure(request, back_path, message):
 	context = {
+		'back_path': back_path,
+		'message': message
 	}
 	return render(request, 'py_grader/failure.html', context)
