@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
 from py_grader.forms import CreateAssignmentForm
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
 
 
 def index(request):
@@ -80,9 +80,26 @@ def create_assignment(request):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
-			return success(request, 'create_assignment/', 'successfully created assignment')
-		else:
-			return failure(request, 'create_assignment/', 'something went wrong')
+			try:
+				assignment = Assignment()
+				data = form.cleaned_data
+				assignment.assignment_name = data.get('assignment_name')
+				assignment.key_source_code = "TODO"
+				assignment.open_time = data.get('open_time')
+				assignment.close_time = data.get('close_time')
+				assignment.total_submissions = 0
+				assignment.number_students_submited = 0
+				print(f'num submissions: {data.get("number_submissions")}')
+				assignment.number_submissions_allowed = data.get('number_submissions')
+				assignment.number_test_cases = 0
+				assignment.grading_method = GradingMethod.objects.get(pk=data.get('grading_method'))
+				assignment.save()
+
+				return success(request, 'create_assignment/', 'Successfully Created Assignment')
+			except Exception as e:
+				return failure(request, 'create_assignment/', str(e))
+
+		return failure(request, 'create_assignment/', 'Invalid Form')
 
 	form = CreateAssignmentForm()
 	context = {

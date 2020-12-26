@@ -13,7 +13,7 @@ class CreateAssignmentForm(forms.Form):
 	grading_methods = GradingMethod.objects.all()
 	grading_choices = []
 	for i in range(len(grading_methods)):
-		grading_choices.append((i + 1, grading_methods[i].grading_method))
+		grading_choices.append((grading_methods[i].pk, grading_methods[i].grading_method))
 	grading_method = forms.ChoiceField(label='Grading Method', choices=grading_choices)
 
 	def clean(self):
