@@ -35,7 +35,7 @@ def submit_assignment(request, assignment_name):
 @login_required(login_url='/admin')
 def create_assignment(request):
 	if request.method == 'POST':
-		form = CreateAssignmentForm(request.POST)
+		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
 			return HttpResponseRedirect('/')
 	else:

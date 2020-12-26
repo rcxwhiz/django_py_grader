@@ -19,7 +19,7 @@
 <br>
 
 <body>
-    <form action="/create_assignment/" method="post">
+    <form action="/create_assignment" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Create">
