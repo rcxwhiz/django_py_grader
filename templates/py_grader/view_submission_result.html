@@ -1,19 +1,21 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>View Result: {{ submission_result.pk }}</title>
 </head>
-<body>
 
-<p>submission id: {{ submission_result.pk }}</p>
-<p>grade: {{ submission_result.submission_grade }}</p>
-{% for case in submission_test_cases %}
-    <p>test case number: {{ case.test_case_number }}</p>
-    <p>submission output: {{ case.submission_output }}</p>
-    <p>expected output: {{ case.expected_output }}</p>
-    <p>correct: {{ case.correct }}</p>
-{% endfor %}
-
+<body style="margin: 0; padding: 50px">
+    <p>submission id: {{ submission_result.pk }}</p>
+    <p>grade: {{ submission_result.submission_grade }}</p>
+    {% for case in submission_test_cases %}
+        <p>test case number: {{ case.test_case_number }}</p>
+        <p>submission output: {{ case.submission_output }}</p>
+        <p>expected output: {{ case.expected_output }}</p>
+        <p>correct: {{ case.correct }}</p>
+    {% endfor %}
 </body>
+
 </html>

@@ -12,13 +12,14 @@
     <title>Create Assignment</title>
 </head>
 
-<h1>PyGrader</h1>
-<h1>Create an Assignment</h1>
+<body style="margin: 0; padding: 50px">
 
-<br>
-<br>
+    <h1>PyGrader</h1>
+    <h1>Create an Assignment</h1>
 
-<body>
+    <br>
+    <br>
+
     <form action="/create_assignment" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.as_p }}

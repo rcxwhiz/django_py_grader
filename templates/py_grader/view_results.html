@@ -7,27 +7,23 @@
     <title>View Results</title>
 </head>
 
-<body>
+<body style="margin: 0; padding: 50px">
+    <h1>PyGrader</h1>
+    <h1>View Results</h1>
 
-<h1>PyGrader</h1>
-<h1>View Results</h1>
+    <br>
+    <br>
 
-<br>
-<br>
-
-<p>Choose an Assignment</p>
-<form action="/action_page.php">
-    <label for="cars">Assignment:    </label>
-    <select name="assignment" id="assignments">
-        {% for assignment in assignments %}
-            <option value="{{ assignment.pk }}">{{ assignment.assignment_name }}</option>
-        {% endfor %}
-    </select><br><br>
-    <input type="submit" value="Go">
-</form>
-
-<br>
-<br>
-
+    <p>Choose an Assignment</p>
+    <form action="/action_page.php">
+        <label for="cars">Assignment:    </label>
+        <select name="assignment" id="assignments">
+            {% for assignment in assignments %}
+                <option value="{{ assignment.pk }}">{{ assignment.assignment_name }}</option>
+            {% endfor %}
+        </select><br><br>
+        <input type="submit" value="Go">
+    </form>
 </body>
+
 </html>
