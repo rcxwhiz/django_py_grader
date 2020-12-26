@@ -31,6 +31,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+	'bootstrap4',
+	'bootstrap_datepicker_plus',
 	'py_grader.apps.PyGraderConfig',
 	'django.contrib.admin',
 	'django.contrib.auth',
@@ -116,3 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+BOOTSTRAP4 = {
+	'include_jquery': True
+}

@@ -1,6 +1,8 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
+from py_grader.forms import CreateAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
 
 # TODO any of these pages that require redirection don't go to their thing after you log in
@@ -30,8 +32,19 @@ def submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/submit_assignment.html', context)
 
 
+@login_required(login_url='/admin')
 def create_assignment(request):
-	return redirect('/admin/py_grader/assignment/add')
+	if request.method == 'POST':
+		form = CreateAssignmentForm(request.POST)
+		if form.is_valid():
+			return HttpResponseRedirect('/')
+	else:
+		form = CreateAssignmentForm()
+
+	context = {
+		'form': form
+	}
+	return render(request, 'py_grader/create_assignment.html', context)
 
 
 @login_required(login_url='/admin')
