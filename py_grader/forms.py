@@ -1,7 +1,7 @@
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 
-from py_grader.models import GradingMethod, Assignment
+from py_grader.models import GradingMethod, Assignment, NetID
 
 
 class CreateAssignmentForm(forms.Form):
@@ -15,6 +15,7 @@ class CreateAssignmentForm(forms.Form):
 	for i in range(len(grading_methods)):
 		grading_choices.append((grading_methods[i].pk, grading_methods[i].grading_method))
 	grading_method = forms.ChoiceField(label='Grading Method', choices=grading_choices)
+	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255)
 
 	def clean(self):
 		cleaned_data = super().clean()
@@ -48,6 +49,20 @@ class AddTestCaseForm(forms.Form):
 class SubmitAssignmentForm(forms.Form):
 	net_id = forms.CharField(label='NetID', max_length=255)
 	student_source_code = forms.FileField(label='Upload .py File')
+
+	def clean(self):
+		cleaned_data = super().clean()
+		net_id = cleaned_data.get('net_id')
+		try:
+			NetID.objects.get(net_id=net_id)
+		except NetID.DoesNotExist:
+			self.add_error('net_id', 'NetID Not Found')
+		code = cleaned_data.get('student_source_code')
+		if not code.name.endswith('.py'):
+			self.add_error('student_source_code', 'Upload a .py File')
+		if code.size > 4e6:
+			self.add_error('student_source_code', 'File over 4MB')
+		return self.cleaned_data
 
 
 class ViewSubmissionForm(forms.Form):

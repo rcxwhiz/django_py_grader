@@ -4,8 +4,10 @@ import subprocess
 import sys
 from typing import List
 
-from old_code.docker_tools import code_timeout, docker_image_name
-from old_code.docker_tools.docker_exception import DockerException
+import py_grader.docker_tools.config as cfg
+
+from py_grader.docker_tools import code_timeout, docker_image_name
+from py_grader.docker_tools.docker_exception import DockerException
 
 
 class CodeRunner:

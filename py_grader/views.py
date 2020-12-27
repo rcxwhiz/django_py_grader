@@ -1,10 +1,8 @@
-from django.http import HttpResponseRedirect, HttpResponseNotFound
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 
-from py_grader.db_access import process_assignment
-from py_grader.forms import CreateAssignmentForm
+from py_grader.handler import process_assignment, process_submission
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
 from py_grader.util import error_list_from_form
 
@@ -24,8 +22,20 @@ def submit(request):
 
 
 def submit_assignment(request, assignment_name):
+	if request.method == 'POST':
+		form = SubmitAssignmentForm(request.POST, request.FILES)
+		if form.is_valid():
+			try:
+				process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
+				return success(request, f'submit_assignment/{assignment_name}/', 'Successfully Submitted Assignment')
+			except Exception as e:
+				return failure(request, f'submit_assignment/{assignment_name}/', str(e))
+		return failure(request, f'submit_assignment/{assignment_name}/', error_list_from_form(form))
+
+	form = SubmitAssignmentForm()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
+		'form': form,
 		'assignment': assignment
 	}
 	return render(request, 'py_grader/submit_assignment.html', context)
