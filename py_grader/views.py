@@ -7,12 +7,14 @@ from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult,
 from py_grader.util import error_list_from_form
 
 
+# TODO
 def index(request):
 	context = {
 	}
 	return render(request, 'py_grader/index.html', context)
 
 
+# TODO
 def submit(request):
 	assignments = Assignment.objects.order_by('close_time')
 	context = {
@@ -41,6 +43,7 @@ def submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/submit_assignment.html', context)
 
 
+# TODO
 @login_required(login_url='/admin')
 def test_submit_assignment(request, assignment_name):
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -50,6 +53,7 @@ def test_submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/test_submit_assignment.html', context)
 
 
+# TODO
 @login_required(login_url='/admin')
 def view_results(request):
 	assignments = Assignment.objects.order_by('close_time')
@@ -59,6 +63,7 @@ def view_results(request):
 	return render(request, 'py_grader/view_results.html', context)
 
 
+# TODO
 @login_required(login_url='/admin')
 def view_assignment_results(request, assignment_name):
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -68,12 +73,14 @@ def view_assignment_results(request, assignment_name):
 	return render(request, 'py_grader/view_assignment_results.html', context)
 
 
+# TODO
 def view_any_submission_result(request):
 	context = {
 	}
 	return render(request, 'py_grader/view_any_submission_result.html', context)
 
 
+# TODO
 def view_submission_result(request, submission_id):
 	submission_result = get_object_or_404(SubmissionResult, submission=submission_id)
 	test_cases = TestCase.objects.order_by('test_case_number').filter(assignment=submission_result.submission.assignment.pk)
@@ -106,6 +113,7 @@ def create_assignment(request):
 	return render(request, 'py_grader/create_assignment.html', context)
 
 
+# TODO
 @login_required(login_url='/admin')
 def manage_net_ids(request):
 	context = {
@@ -113,6 +121,7 @@ def manage_net_ids(request):
 	return render(request, 'py_grader/manage_net_ids.html', context)
 
 
+# TODO
 def grader_login(request):
 	context = {
 	}
