@@ -3,8 +3,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
+from py_grader.db_access import process_assignment
 from py_grader.forms import CreateAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
+from py_grader.util import error_list_from_form
 
 
 def index(request):
@@ -81,32 +83,11 @@ def create_assignment(request):
 		form = CreateAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
 			try:
-				assignment = Assignment()
-				data = form.cleaned_data
-				assignment.assignment_name = data.get('assignment_name')
-				in_memory_code = data.get('key_source_code')
-				code_text = ''
-				for line in in_memory_code:
-					code_text += line.decode()
-				assignment.key_source_code = code_text
-				assignment.open_time = data.get('open_time')
-				assignment.close_time = data.get('close_time')
-				assignment.total_submissions = 0
-				assignment.number_students_submited = 0
-				assignment.number_submissions_allowed = data.get('number_submissions')
-				assignment.number_test_cases = 0
-				assignment.grading_method = GradingMethod.objects.get(pk=data.get('grading_method'))
-				assignment.save()
-
+				process_assignment(form)
 				return success(request, 'create_assignment/', 'Successfully Created Assignment')
 			except Exception as e:
 				return failure(request, 'create_assignment/', str(e))
-
-		msgs = []
-		for key in form.errors.as_data():
-			for err in form.errors.as_data()[key]:
-				msgs.append(f'{key} - {err.message}')
-		return failure(request, 'create_assignment/', msgs)
+		return failure(request, 'create_assignment/', error_list_from_form(form))
 
 	form = CreateAssignmentForm()
 	context = {
