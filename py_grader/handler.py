@@ -145,14 +145,18 @@ byu_csv_header = 'Name,NetID,Email,Major,Last View,Total Views,'
 def upload_net_id_csv_db(form):
 	in_memory_csv = form.cleaned_data.get('csv_file')
 
+	csv_type = 'OTHER'
 	with open(in_memory_csv) as f:
 		if f.read().startswith(byu_csv_header):
-			csv = pd.read_csv(in_memory_csv,
-			                  names=['Name', 'NetID', 'Email', 'Major', 'Last View', 'Total Views', 'Something',
-			                         'Something else'])
-			csv = csv.iloc[1:]
-		else:
-			csv = pd.read_csv(in_memory_csv)
+			csv_type = 'BYU'
+
+	if csv_type == 'BYU':
+		csv = pd.read_csv(in_memory_csv,
+		                  names=['Name', 'NetID', 'Email', 'Major', 'Last View', 'Total Views', 'Something',
+		                         'Something else'])
+		csv = csv.iloc[1:]
+	else:
+		csv = pd.read_csv(in_memory_csv)
 
 	num_saved = 0
 	for item in csv['NetID']:
