@@ -2,9 +2,10 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from py_grader.handler import process_assignment, process_submission, process_test_submission
-from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, TestSubmitAssignment, \
-	ViewSubmissionForm
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
+	ViewSubmissionForm, NetIDForm
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission, \
+	NetID
 from py_grader.util import error_list_from_form
 
 
@@ -54,7 +55,7 @@ def submit_assignment(request, assignment_name):
 @login_required(login_url='/admin')
 def test_submit_assignment(request, assignment_name):
 	if request.method == 'POST':
-		form = TestSubmitAssignment(request.POST, request.FILES)
+		form = SubmitPyFile(request.POST, request.FILES)
 		if form.is_valid():
 			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
@@ -64,7 +65,7 @@ def test_submit_assignment(request, assignment_name):
 				return failure(f'test_submit/{assignment_name}/', str(e))
 		return failure(f'test_submit/{assignment_name}/', error_list_from_form(form))
 
-	form = TestSubmitAssignment()
+	form = SubmitPyFile()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
 		'form': form,
@@ -154,12 +155,53 @@ def add_test_case(request, assignment_name):
 	return render(request, 'py_grader/add_test_case.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def manage_net_ids(request):
 	context = {
 	}
 	return render(request, 'py_grader/manage_net_ids.html', context)
+
+
+# TODO
+@login_required(login_url='/admin')
+def add_net_id(request):
+	if request.method == 'POST':
+		form = NetIDForm(request.POST)
+		if form.is_valid():
+			get_object_or_404(NetID, net_id=form.net_id)
+			add_net_id_db(form)
+			return success('add_net_id/', 'Successfully Added NetID')
+		return failure('add_net_id/', error_list_from_form(form))
+
+	form = NetIDForm()
+	context = {
+		'form': form
+	}
+	return render(request, 'py_grader/add_net_id.html', context)
+
+
+# TODO
+@login_required(login_url='/admin')
+def remove_net_id(request):
+	context = {
+	}
+	return render(request, 'py_grader/remove_net_id.html', context)
+
+
+# TODO
+@login_required(login_url='/admin')
+def upload_net_id_csv(request):
+	context = {
+	}
+	return render(request, 'py_grader/upload_net_id_csv.html', context)
+
+
+# TODO
+@login_required(login_url='/admin')
+def clear_net_id(request):
+	context = {
+	}
+	return render(request, 'py_grader/clear_net_id.html', context)
 
 
 # TODO

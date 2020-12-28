@@ -33,12 +33,12 @@ class CreateAssignmentForm(forms.Form):
 		if not code.name.endswith('.py'):
 			self.add_error('key_source_code', 'File Type Must be .py')
 		if code.size > 4e6:
-			self.add_error('key_source_code', 'File over 4 MB')
+			self.add_error('key_source_code', 'File Over 4 MB')
 		open_time = cleaned_data.get('open_time')
 		close_time = cleaned_data.get('close_time')
 		if open_time > close_time:
 			self.add_error('close_time', 'Assignment Must Close After it Opens')
-		return self.cleaned_data
+		return cleaned_data
 
 
 class AddTestCaseForm(forms.Form):
@@ -82,10 +82,10 @@ class SubmitAssignmentForm(forms.Form):
 			self.add_error('student_source_code', 'File Type Must be .py')
 		if code.size > 4e6:
 			self.add_error('student_source_code', 'File over 4MB')
-		return self.cleaned_data
+		return cleaned_data
 
 
-class TestSubmitAssignment(forms.Form):
+class SubmitPyFile(forms.Form):
 	source_code = forms.FileField(label='Upload a .py File')
 
 	def clean(self):
@@ -94,8 +94,8 @@ class TestSubmitAssignment(forms.Form):
 		if not code.name.endswith('.py'):
 			self.add_error('source_code', 'File Type Must be .py')
 		if code.size > 4e6:
-			self.add_error('student_source_code', 'File over 4MB')
-		return self.cleaned_data
+			self.add_error('student_source_code', 'File Over 4MB')
+		return cleaned_data
 
 
 class ViewSubmissionForm(forms.Form):
@@ -104,3 +104,20 @@ class ViewSubmissionForm(forms.Form):
 
 class AddGradingMethodForm(forms.Form):
 	grading_method = forms.CharField(label='Grading Method', max_length=255)
+
+
+class NetIDForm(forms.Form):
+	net_id = forms.CharField(label='NetID', max_length=255)
+
+
+class CSVFileForm(forms.Form):
+	csv_file = forms.FileField(label='Upload a .csv File')
+
+	def clean(self):
+		cleaned_data = super().clean()
+		csv = cleaned_data.get('csv_file')
+		if not csv.name.endswith('.csv'):
+			self.add_error('csv_file', 'File Type Must be .csv')
+		if csv.size > 4e6:
+			self.add_error('csv_file', 'File Over 4MB')
+		return cleaned_data
