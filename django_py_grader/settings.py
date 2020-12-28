@@ -33,13 +33,14 @@ ALLOWED_HOSTS = [
 INSTALLED_APPS = [
 	'bootstrap4',
 	'bootstrap_datepicker_plus',
-	'py_grader.apps.PyGraderConfig',
+	'django.contrib.sites',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
+	'py_grader.apps.PyGraderConfig',
 ]
 
 MIDDLEWARE = [

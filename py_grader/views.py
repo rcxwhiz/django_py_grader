@@ -106,11 +106,19 @@ def create_assignment(request):
 				return failure(request, 'create_assignment/', str(e))
 		return failure(request, 'create_assignment/', error_list_from_form(form))
 
-	form = CreateAssignmentForm()
+	form = CreateAssignmentForm(grading_methods=GradingMethod.objects.all())
 	context = {
 		'form': form
 	}
 	return render(request, 'py_grader/create_assignment.html', context)
+
+
+# TODO
+@login_required(login_url='/admin')
+def add_test_case(request, assignment_name):
+	context = {
+	}
+	return render(request, 'py_grader/add_test_case.html', context)
 
 
 # TODO

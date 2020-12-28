@@ -1,21 +1,26 @@
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 
-from py_grader.models import GradingMethod, Assignment, NetID
+from py_grader.models import Assignment, NetID
 
 
 class CreateAssignmentForm(forms.Form):
+
 	assignment_name = forms.CharField(label='Assignment Name', max_length=255)
 	key_source_code = forms.FileField(label='Upload .py File')
 	open_time = forms.DateTimeField(label='Open Time', widget=DateTimePickerInput())
 	close_time = forms.DateTimeField(label='Close Time', widget=DateTimePickerInput())
 	number_submissions = forms.IntegerField(label='Number Submissions Allowed', initial=100, min_value=0)
-	grading_methods = GradingMethod.objects.all()
-	grading_choices = []
-	for i in range(len(grading_methods)):
-		grading_choices.append((grading_methods[i].pk, grading_methods[i].grading_method))
-	grading_method = forms.ChoiceField(label='Grading Method', choices=grading_choices)
+	grading_method = forms.ChoiceField(label='Grading Method', choices=[])
 	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255)
+
+	def __init__(self, grading_methods=None, *args, **kwargs):
+		super(CreateAssignmentForm, self).__init__(*args, **kwargs)
+		if grading_methods:
+			grading_choices = []
+			for grading_method in grading_methods:
+				grading_choices.append((grading_method.pk, grading_method.grading_method))
+			self.fields['grading_method'].choices = grading_choices
 
 	def clean(self):
 		cleaned_data = super().clean()
@@ -38,12 +43,18 @@ class CreateAssignmentForm(forms.Form):
 
 
 class AddTestCaseForm(forms.Form):
-	assignment_choices = []
-	assignments = Assignment.objects.order_by('close_time')
-	for i in range(len(assignments)):
-		assignment_choices.append((i + 1, assignments[i].assignment_name))
-	assignment_name = forms.ChoiceField(label='Assignment', choices=assignment_choices)
+
+	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
 	test_case_input = forms.CharField(label='Test Case Input', widget=forms.Textarea)
+
+	def __init__(self, assignments=None, *args, **kwargs):
+		super(AddTestCaseForm, self).__init__(*args, **kwargs)
+		if assignments:
+			assignment_choices = []
+			# assignments = Assignment.objects.order_by('close_time')
+			for i in range(len(assignments)):
+				assignment_choices.append((i + 1, assignments[i].assignment_name))
+			self.fields['assignment_name'].choices = assignment_choices
 
 
 class SubmitAssignmentForm(forms.Form):
@@ -70,11 +81,16 @@ class ViewSubmissionForm(forms.Form):
 
 
 class ViewAssignmentResultForm(forms.Form):
-	assignment_choices = []
-	assignments = Assignment.objects.order_by('close_time')
-	for i in range(len(assignments)):
-		assignment_choices.append((i + 1, assignments[i].assignment_name))
-	assignment_name = forms.ChoiceField(label='Assignment', choices=assignment_choices)
+	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
+
+	def __init__(self, assignments=None, *args, **kwargs):
+		super(ViewAssignmentResultForm, self).__init__(*args, **kwargs)
+		if assignments:
+			assignment_choices = []
+			# assignments = Assignment.objects.order_by('close_time')
+			for i in range(len(assignments)):
+				assignment_choices.append((i + 1, assignments[i].assignment_name))
+			self.fields['assignment_name'].choices = assignment_choices
 
 
 class AddGradingMethodForm(forms.Form):

@@ -6,7 +6,6 @@ from typing import List
 
 import py_grader.docker_tools.config as cfg
 
-from py_grader.docker_tools import code_timeout, docker_image_name
 from py_grader.docker_tools.docker_exception import DockerException
 
 
@@ -85,7 +84,7 @@ class CodeRunner:
 		self._generate_docker_context()
 		try:
 			output = 'EXIT CODE: 0\n' if include_exit_code else ''
-			output += subprocess.check_output(['docker', 'run', '-it', '--rm', cfg.docker_image_name] + argv, stderr=subprocess.STDOUT, timeout=code_timeout).decode('utf-8')
+			output += subprocess.check_output(['docker', 'run', '-it', '--rm', cfg.docker_image_name] + argv, stderr=subprocess.STDOUT, timeout=cfg.code_timeout).decode('utf-8')
 		except subprocess.CalledProcessError as e:
 			output = f'EXIT CODE: {e.returncode}\n' if include_exit_code else ''
 			output += f'{e.output.decode("utf-8")}'
@@ -118,7 +117,7 @@ class CodeRunner:
 			dockerfile.writelines([f'RUN pip install {" ".join(self.requried_packages)}\n'])
 		dockerfile.writelines([f'ENTRYPOINT ["python3", "./{self.filename}"]\n'])
 		dockerfile.close()
-		output = subprocess.check_output(['docker', 'build', '-t', docker_image_name, '.']).decode('utf-8')
+		output = subprocess.check_output(['docker', 'build', '-t', cfg.docker_image_name, '.']).decode('utf-8')
 		context_id = re.search(r'Successfully built (.+)\n', output)[0]
 		if context_id is None:
 			raise DockerException('Could not create_assignment docker context')
@@ -130,4 +129,4 @@ def delete_docker_images() -> None:
 	Deletes all docker images related to this project
 	"""
 	print(f'WARNING: deleting {cfg.docker_image_name} docker images', file=sys.stderr)
-	subprocess.run(['docker', 'system', 'prune', f'-label={docker_image_name}', '-f'], stdout=open(os.devnull, 'wb'))
+	subprocess.run(['docker', 'system', 'prune', f'-label={cfg.docker_image_name}', '-f'], stdout=open(os.devnull, 'wb'))

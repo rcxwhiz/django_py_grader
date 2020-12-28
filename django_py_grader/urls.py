@@ -34,6 +34,7 @@ urlpatterns = [
 	path('view_submission_result/<int:submission_id>/', views.view_submission_result, name='view_submission_result'),
 
 	path('create_assignment/', views.create_assignment, name='create_assignment'),
+	path('add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
 
 	path('manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
 
