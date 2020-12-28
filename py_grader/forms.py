@@ -5,7 +5,6 @@ from py_grader.models import Assignment, NetID
 
 
 class CreateAssignmentForm(forms.Form):
-
 	assignment_name = forms.CharField(label='Assignment Name', max_length=255)
 	key_source_code = forms.FileField(label='Upload .py File')
 	open_time = forms.DateTimeField(label='Open Time', widget=DateTimePickerInput())
@@ -43,7 +42,6 @@ class CreateAssignmentForm(forms.Form):
 
 
 class AddTestCaseForm(forms.Form):
-
 	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
 	test_case_input = forms.CharField(label='Test Case Input', widget=forms.Textarea)
 
@@ -51,7 +49,18 @@ class AddTestCaseForm(forms.Form):
 		super(AddTestCaseForm, self).__init__(*args, **kwargs)
 		if assignments:
 			assignment_choices = []
-			# assignments = Assignment.objects.order_by('close_time')
+			for i in range(len(assignments)):
+				assignment_choices.append((i + 1, assignments[i].assignment_name))
+			self.fields['assignment_name'].choices = assignment_choices
+
+
+class ChooseAssignmentForm(forms.Form):
+	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
+
+	def __init__(self, assignments=None, *args, **kwargs):
+		super(ChooseAssignmentForm, self).__init__(*args, **kwargs)
+		if assignments:
+			assignment_choices = []
 			for i in range(len(assignments)):
 				assignment_choices.append((i + 1, assignments[i].assignment_name))
 			self.fields['assignment_name'].choices = assignment_choices
@@ -78,19 +87,6 @@ class SubmitAssignmentForm(forms.Form):
 
 class ViewSubmissionForm(forms.Form):
 	submission_number = forms.IntegerField(label='Submission ID', min_value=0)
-
-
-class ViewAssignmentResultForm(forms.Form):
-	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
-
-	def __init__(self, assignments=None, *args, **kwargs):
-		super(ViewAssignmentResultForm, self).__init__(*args, **kwargs)
-		if assignments:
-			assignment_choices = []
-			# assignments = Assignment.objects.order_by('close_time')
-			for i in range(len(assignments)):
-				assignment_choices.append((i + 1, assignments[i].assignment_name))
-			self.fields['assignment_name'].choices = assignment_choices
 
 
 class AddGradingMethodForm(forms.Form):
