@@ -22,7 +22,7 @@ def submit(request):
 		if form.is_valid():
 			get_object_or_404(Assignment, assignment_name=form.assignment_name)
 			return redirect(f'submit/{form.assignment_name}/')
-		return failure('submit/', error_list_from_form(form))
+		return failure(request, 'submit/', error_list_from_form(form))
 
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
@@ -40,8 +40,8 @@ def submit_assignment(request, assignment_name):
 				submission_result_id = process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
 				return redirect(f'view_submission_result/{submission_result_id}')
 			except Exception as e:
-				return failure(f'submit_assignment/{assignment_name}/', str(e))
-		return failure(f'submit_assignment/{assignment_name}/', error_list_from_form(form))
+				return failure(request, f'submit_assignment/{assignment_name}/', str(e))
+		return failure(request, f'submit_assignment/{assignment_name}/', error_list_from_form(form))
 
 	form = SubmitAssignmentForm()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -61,10 +61,10 @@ def test_submit_assignment(request, assignment_name):
 			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
 				process_test_submission(form, assignment_name)
-				return success(f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')
+				return success(request, f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')
 			except Exception as e:
-				return failure(f'test_submit/{assignment_name}/', str(e))
-		return failure(f'test_submit/{assignment_name}/', error_list_from_form(form))
+				return failure(request, f'test_submit/{assignment_name}/', str(e))
+		return failure(request, f'test_submit/{assignment_name}/', error_list_from_form(form))
 
 	form = SubmitPyFile()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -82,7 +82,7 @@ def view_results(request):
 		if form.is_valid():
 			get_object_or_404(Assignment, assigment_name=form.assignment_name)
 			return redirect(f'view_assignment_results/{form.assignment_name}/')
-		return failure('view_assignment_results/', error_list_from_form(form))
+		return failure(request, 'view_assignment_results/', error_list_from_form(form))
 
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
@@ -107,7 +107,7 @@ def view_any_submission_result(request):
 		if form.is_valid():
 			get_object_or_404(Submission, pk=form.submission_number)
 			return redirect(f'view_submission_result/{form.submission_number}/')
-		return failure('view_assignment_results/', error_list_from_form(form))
+		return failure(request, 'view_assignment_results/', error_list_from_form(form))
 
 	form = ViewSubmissionForm()
 	context = {
@@ -136,10 +136,10 @@ def create_assignment(request):
 		if form.is_valid():
 			try:
 				process_assignment(form)
-				return success('create_assignment/', 'Successfully Created Assignment')
+				return success(request, 'create_assignment/', 'Successfully Created Assignment')
 			except Exception as e:
-				return failure('create_assignment/', str(e))
-		return failure('create_assignment/', error_list_from_form(form))
+				return failure(request, 'create_assignment/', str(e))
+		return failure(request, 'create_assignment/', error_list_from_form(form))
 
 	form = CreateAssignmentForm(grading_methods=GradingMethod.objects.all())
 	context = {
@@ -170,10 +170,10 @@ def add_net_id(request):
 		if form.is_valid():
 			try:
 				add_net_id_db(form)
-				return success('add_net_id/', 'Successfully Added NetID')
+				return success(request, 'add_net_id/', 'Successfully Added NetID')
 			except Exception as e:
-				return failure('add_net_id/', str(e))
-		return failure('add_net_id/', error_list_from_form(form))
+				return failure(request, 'add_net_id/', str(e))
+		return failure(request, 'add_net_id/', error_list_from_form(form))
 
 	form = NetIDForm()
 	context = {
@@ -189,10 +189,10 @@ def remove_net_id(request):
 		if form.is_valid():
 			try:
 				remove_net_id_db(form)
-				return success('remove_net_id/', 'Successfully Removed NetID')
+				return success(request, 'remove_net_id/', 'Successfully Removed NetID')
 			except Exception as e:
-				return failure('remove_net_id/', str(e))
-		return failure('remove_net_id/', error_list_from_form(form))
+				return failure(request, 'remove_net_id/', str(e))
+		return failure(request, 'remove_net_id/', error_list_from_form(form))
 
 	form = NetIDForm()
 	context = {
@@ -208,10 +208,10 @@ def upload_net_id_csv(request):
 		if form.is_valid():
 			try:
 				num_uploaded = upload_net_id_csv_db(form)
-				return success('upload_net_id_csv/', f'Successfully Uploaded {num_uploaded} NetIDs')
+				return success(request, 'upload_net_id_csv/', f'Successfully Uploaded {num_uploaded} NetIDs')
 			except Exception as e:
-				return failure('upload_net_id_csv/', str(e))
-		return failure('upload_net_id_csv/', error_list_from_form(form))
+				return failure(request, 'upload_net_id_csv/', str(e))
+		return failure(request, 'upload_net_id_csv/', error_list_from_form(form))
 
 	form = CSVFileForm()
 	context = {
@@ -225,9 +225,9 @@ def clear_net_id(request):
 	if request.method == 'POST':
 		try:
 			clear_net_id_db()
-			return success('clear_net_id/', 'Successfully Cleared NetIDs')
+			return success(request, 'clear_net_id/', 'Successfully Cleared NetIDs')
 		except Exception as e:
-			return failure('clear_net_id/', str(e))
+			return failure(request, 'clear_net_id/', str(e))
 
 	context = {
 	}
@@ -241,17 +241,17 @@ def grader_login(request):
 	return render(request, 'py_grader/grader_login.html', context)
 
 
-def success(back_path, message):
+def success(request, back_path, message):
 	context = {
 		'back_path': back_path,
 		'message': message
 	}
-	return redirect('/success/', context)
+	return render(request, 'py_grader/success.html', context)
 
 
-def failure(back_path, errors):
+def failure(request, back_path, errors):
 	context = {
 		'back_path': back_path,
 		'errors': errors
 	}
-	return redirect('/failure/', context)
+	return render(request, 'py_grader/failure.html', context)
