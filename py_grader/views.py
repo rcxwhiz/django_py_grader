@@ -8,7 +8,6 @@ from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult,
 from py_grader.util import error_list_from_form
 
 
-# TODO
 def index(request):
 	context = {
 	}
@@ -30,15 +29,14 @@ def submit(request):
 	return render(request, 'py_grader/submit.html', context)
 
 
-# TODO this should do a redirect?
-# TODO use a get or 404
 def submit_assignment(request, assignment_name):
 	if request.method == 'POST':
 		form = SubmitAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
+			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
-				process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
-				return success(f'submit_assignment/{assignment_name}/', 'Successfully Submitted Assignment')
+				submission_result_id = process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
+				return redirect(f'view_submission_result/{submission_result_id}')
 			except Exception as e:
 				return failure(f'submit_assignment/{assignment_name}/', str(e))
 		return failure(f'submit_assignment/{assignment_name}/', error_list_from_form(form))
@@ -53,12 +51,12 @@ def submit_assignment(request, assignment_name):
 
 
 # TODO this should redirect to a result?
-# TODO use a get or 404
 @login_required(login_url='/admin')
 def test_submit_assignment(request, assignment_name):
 	if request.method == 'POST':
 		form = TestSubmitAssignment(request.POST, request.FILES)
 		if form.is_valid():
+			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
 				process_test_submission(form, assignment_name)
 				return success(f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')

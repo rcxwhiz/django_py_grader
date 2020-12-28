@@ -123,3 +123,4 @@ def process_submission(form, assignment_name, ip_address):
 	submission_result.submission = submission
 	submission_result.submission_grade = grade
 	submission_result.save()
+	return submission_result.pk
