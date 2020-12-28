@@ -139,10 +139,20 @@ def remove_net_id_db(form):
 	net_id.delete()
 
 
+byu_csv_header = 'Name,NetID,Email,Major,Last View,Total Views,'
+
+
 def upload_net_id_csv_db(form):
 	in_memory_csv = form.cleaned_data.get('csv_file')
-	csv = pd.read_csv(in_memory_csv, names=['Name', 'NetID', 'Email', 'Major', 'Last View', 'Total Views', 'Something', 'Something else'])
-	csv = csv.iloc[1:]
+
+	with open(in_memory_csv) as f:
+		if f.read().startswith(byu_csv_header):
+			csv = pd.read_csv(in_memory_csv,
+			                  names=['Name', 'NetID', 'Email', 'Major', 'Last View', 'Total Views', 'Something',
+			                         'Something else'])
+			csv = csv.iloc[1:]
+		else:
+			csv = pd.read_csv(in_memory_csv)
 
 	num_saved = 0
 	for item in csv['NetID']:
