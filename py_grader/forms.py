@@ -31,7 +31,7 @@ class CreateAssignmentForm(forms.Form):
 			pass
 		code = cleaned_data.get('key_source_code')
 		if not code.name.endswith('.py'):
-			self.add_error('key_source_code', 'Upload a .py File')
+			self.add_error('key_source_code', 'File Type Must be .py')
 		if code.size > 4e6:
 			self.add_error('key_source_code', 'File over 4 MB')
 		open_time = cleaned_data.get('open_time')
@@ -79,7 +79,20 @@ class SubmitAssignmentForm(forms.Form):
 			self.add_error('net_id', 'NetID Not Found')
 		code = cleaned_data.get('student_source_code')
 		if not code.name.endswith('.py'):
-			self.add_error('student_source_code', 'Upload a .py File')
+			self.add_error('student_source_code', 'File Type Must be .py')
+		if code.size > 4e6:
+			self.add_error('student_source_code', 'File over 4MB')
+		return self.cleaned_data
+
+
+class TestSubmitAssignment(forms.Form):
+	source_code = forms.FileField(label='Upload a .py File')
+
+	def clean(self):
+		cleaned_data = super().clean()
+		code = cleaned_data.get('source_code')
+		if not code.name.endswith('.py'):
+			self.add_error('source_code', 'File Type Must be .py')
 		if code.size > 4e6:
 			self.add_error('student_source_code', 'File over 4MB')
 		return self.cleaned_data

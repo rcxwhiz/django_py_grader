@@ -25,6 +25,11 @@ def process_assignment(form):
 	assignment.save()
 
 
+# TODO
+def process_test_submission(form, assignment_name):
+	pass
+
+
 class SubmissionException(Exception):
 	def __init__(self, msg):
 		super(msg)

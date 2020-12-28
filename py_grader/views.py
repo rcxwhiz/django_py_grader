@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from py_grader.handler import process_assignment, process_submission
-from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm
+from py_grader.handler import process_assignment, process_submission, process_test_submission
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, TestSubmitAssignment
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
 from py_grader.util import error_list_from_form
 
@@ -14,7 +14,6 @@ def index(request):
 	return render(request, 'py_grader/index.html', context)
 
 
-# TODO
 def submit(request):
 	if request.method == 'GET':
 		form = ChooseAssignmentForm(request.GET)
@@ -33,6 +32,7 @@ def submit(request):
 	return render(request, 'py_grader/submit.html', context)
 
 
+# TODO this should do a redirect?
 def submit_assignment(request, assignment_name):
 	if request.method == 'POST':
 		form = SubmitAssignmentForm(request.POST, request.FILES)
@@ -53,11 +53,23 @@ def submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/submit_assignment.html', context)
 
 
-# TODO
+# TODO this should redirect to a result?
 @login_required(login_url='/admin')
 def test_submit_assignment(request, assignment_name):
+	if request.method == 'POST':
+		form = TestSubmitAssignment(request.POST, request.FILES)
+		if form.is_valid():
+			try:
+				process_test_submission(form, assignment_name)
+				return success(request, f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')
+			except Exception as e:
+				return failure(request, f'test_submit/{assignment_name}/', str(e))
+		return failure(request, f'test_submit/{assignment_name}/', error_list_from_form(form))
+
+	form = TestSubmitAssignment()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
+		'form': form,
 		'assignment': assignment
 	}
 	return render(request, 'py_grader/test_submit_assignment.html', context)
@@ -146,6 +158,7 @@ def grader_login(request):
 	return render(request, 'py_grader/grader_login.html', context)
 
 
+# TODO change this to redirect
 def success(request, back_path, message):
 	context = {
 		'back_path': back_path,
@@ -154,6 +167,7 @@ def success(request, back_path, message):
 	return render(request, 'py_grader/success.html', context)
 
 
+# TODO change this to redirect
 def failure(request, back_path, errors):
 	context = {
 		'back_path': back_path,
