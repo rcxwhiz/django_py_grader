@@ -14,12 +14,9 @@
     <br>
     <br>
 
-    <p>Submit an Assignment</p>
-    <form action="/action_page.php">
-        <label for="fname">NetID:    </label>
-        <input type="text" id="fname" name="fname"><br><br>
-        <label for="myfile">Select your Python file</label><br><br>
-        <input type="file" id="myfile" name="myfile"><br><br>
+    <form action="/submit_assignment/{{ assignment.assignment_name }}">
+        {% csrf_token %}
+        {{ form.as_p }}
         <input type="submit" value="Submit">
     </form>
 
