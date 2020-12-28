@@ -39,14 +39,21 @@ class CodeRunner:
 		"""
 		self.requried_packages.add(package_name)
 
-	def add_file(self, filename: str) -> None:
+	def add_file(self, src_filename: str, dest_filename: str) -> None:
 		"""
 		Adds a file to be copied to the docker instance
 
 		Args:
-			filename (str): Name of the file to be copied
+			src_filename (str): Source name of the file to be copied
+			dest_filename (str): Destination name of the file to be copied
 		"""
-		self.files.add(filename)
+		self.files.add({'src': src_filename, 'dest': dest_filename})
+
+	def clear_files(self) -> None:
+		"""
+		Clears the files for this runner
+		"""
+		self.files = []
 
 	def run(self, cleanup: bool = False, include_exit_code: bool = False) -> str:
 		"""
@@ -110,9 +117,9 @@ class CodeRunner:
 		                       f'COPY {self.filename} {self.filename}\n',
 		                       f'CMD ["{self.filename}"]\n'])
 		for file in self.files:
-			if not os.path.exists(file):
-				raise FileNotFoundError(f'Could not find {file} to copy to docker instance')
-			dockerfile.writelines([f'COPY {file} {file}\n'])
+			if not os.path.exists(file['src']):
+				raise FileNotFoundError(f'Could not find {file["src"]} to copy to docker instance')
+			dockerfile.writelines([f'COPY {file["src"]} {file["dest"]}\n'])
 		if len(self.requried_packages) > 0:
 			dockerfile.writelines([f'RUN pip install {" ".join(self.requried_packages)}\n'])
 		dockerfile.writelines([f'ENTRYPOINT ["python3", "./{self.filename}"]\n'])

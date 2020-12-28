@@ -1,10 +1,11 @@
+import os
 from datetime import datetime
 
 import pandas as pd
 
 from py_grader.docker_tools import CodeRunner
 from py_grader.models import Assignment, GradingMethod, NumberSubmissions, NetID, TestCase, SubmissionCaseResult, \
-	Submission, SubmissionResult
+	Submission, SubmissionResult, TestCaseFile
 
 
 def process_assignment(form):
@@ -92,30 +93,43 @@ def process_submission(form, assignment_name, ip_address):
 	# find test cases for that assignment
 	test_cases = TestCase.objects.order_by('test_case_number').filter(assignment=assignment)
 
+	temp_filename = f'{net_id.net_id}_temp.py'
+
 	# create code runner
 	code_runner = CodeRunner()
-	code_runner.set_filename('student_temp.py')
+	code_runner.set_filename(temp_filename)
 	packages = assignment.allowed_packages.split()
 	for package in packages:
 		code_runner.add_package(package)
 
+	with open(temp_filename, 'w') as temp_f:
+		temp_f.write(submission.submission_source_code)
+
 	# run the code against each of those and make a list of results
 	submission_case_results = []
 	for test_case in test_cases:
+		test_case_files = TestCaseFile.objects.filter(test_case=test_case)
+		code_runner.clear_files()
+		for test_case_file in test_case_files:
+			with open(f'temp_files/{test_case_file.name}', 'w') as f:
+				db_f = test_case_file.test_case_file.open('r')
+				f.write(db_f.read())
+				code_runner.add_file(f'temp_files/{test_case_file.name}', test_case_file.name)
+
 		submission_case_result = SubmissionCaseResult()
 		submission_case_result.submission = submission
 		submission_case_result.test_case = test_case
 		submission_case_result.test_case_number = test_case.test_case_number
 		submission_case_result.expected_output = test_case.test_case_output
 
-		with open('student_temp.py', 'w') as temp_f:
-			temp_f.write(submission.submission_source_code)
-
 		submission_case_result.submission_output = code_runner.run()
 		submission_case_result.correct = (submission_case_result.expected_output == submission_case_result.submission_output)
 
 		submission_case_result.save()
 		submission_case_results.append(submission_case_result)
+
+		for test_case_file in test_case_files:
+			os.remove(f'temp_files/{test_case_file.name}')
 
 	# calculate a total grade
 	grade = calculate_grade(submission_case_results, assignment.grading_method.grading_method)
@@ -125,6 +139,9 @@ def process_submission(form, assignment_name, ip_address):
 	submission_result.submission = submission
 	submission_result.submission_grade = grade
 	submission_result.save()
+
+	os.remove(temp_filename)
+
 	return submission_result.pk
 
 
