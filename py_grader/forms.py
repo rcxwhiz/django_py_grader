@@ -56,7 +56,7 @@ class AddTestCaseForm(forms.Form):
 
 	def clean(self):
 		cleaned_data = super().clean()
-		for file in cleaned_data.get('test_case_files'):
+		for file in cleaned_data.getlist('test_case_files'):
 			if file.size > 4e6:
 				self.add_error('test_case_files', f'{file.name} Over 4 MB')
 		return cleaned_data
