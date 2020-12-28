@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from py_grader.handler import process_assignment, process_submission, process_test_submission
-from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, TestSubmitAssignment
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, TestSubmitAssignment, \
+	ViewSubmissionForm
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission
 from py_grader.util import error_list_from_form
 
 
@@ -18,12 +19,9 @@ def submit(request):
 	if request.method == 'GET':
 		form = ChooseAssignmentForm(request.GET)
 		if form.is_valid():
-			try:
-				Assignment.objects.get(assignment_name=form.assignment_name)
-				return redirect(f'submit/{form.assignment_name}/')
-			except Exception as e:
-				return failure(request, 'submit/', str(e))
-		return failure(request, 'submit/', error_list_from_form(form))
+			get_object_or_404(Assignment, assignment_name=form.assignment_name)
+			return redirect(f'submit/{form.assignment_name}/')
+		return failure('submit/', error_list_from_form(form))
 
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
@@ -33,16 +31,17 @@ def submit(request):
 
 
 # TODO this should do a redirect?
+# TODO use a get or 404
 def submit_assignment(request, assignment_name):
 	if request.method == 'POST':
 		form = SubmitAssignmentForm(request.POST, request.FILES)
 		if form.is_valid():
 			try:
 				process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
-				return success(request, f'submit_assignment/{assignment_name}/', 'Successfully Submitted Assignment')
+				return success(f'submit_assignment/{assignment_name}/', 'Successfully Submitted Assignment')
 			except Exception as e:
-				return failure(request, f'submit_assignment/{assignment_name}/', str(e))
-		return failure(request, f'submit_assignment/{assignment_name}/', error_list_from_form(form))
+				return failure(f'submit_assignment/{assignment_name}/', str(e))
+		return failure(f'submit_assignment/{assignment_name}/', error_list_from_form(form))
 
 	form = SubmitAssignmentForm()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -54,6 +53,7 @@ def submit_assignment(request, assignment_name):
 
 
 # TODO this should redirect to a result?
+# TODO use a get or 404
 @login_required(login_url='/admin')
 def test_submit_assignment(request, assignment_name):
 	if request.method == 'POST':
@@ -61,10 +61,10 @@ def test_submit_assignment(request, assignment_name):
 		if form.is_valid():
 			try:
 				process_test_submission(form, assignment_name)
-				return success(request, f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')
+				return success(f'test_submit/{assignment_name}/', 'Successfully Test Submitted Assignment')
 			except Exception as e:
-				return failure(request, f'test_submit/{assignment_name}/', str(e))
-		return failure(request, f'test_submit/{assignment_name}/', error_list_from_form(form))
+				return failure(f'test_submit/{assignment_name}/', str(e))
+		return failure(f'test_submit/{assignment_name}/', error_list_from_form(form))
 
 	form = TestSubmitAssignment()
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -75,14 +75,20 @@ def test_submit_assignment(request, assignment_name):
 	return render(request, 'py_grader/test_submit_assignment.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def view_results(request):
-	assignments = Assignment.objects.order_by('close_time')
+	if request.method == 'GET':
+		form = ChooseAssignmentForm(request.GET)
+		if form.is_valid():
+			get_object_or_404(Assignment, assigment_name=form.assignment_name)
+			return redirect(f'view_assignment_results/{form.assignment_name}/')
+		return failure('view_assignment_results/', error_list_from_form(form))
+
+	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
-		'assignments': assignments
+		'form': form
 	}
-	return render(request, 'py_grader/view_results.html', context)
+	return render(request, 'py_grader/view_assignment_results.html', context)
 
 
 # TODO
@@ -95,9 +101,17 @@ def view_assignment_results(request, assignment_name):
 	return render(request, 'py_grader/view_assignment_results.html', context)
 
 
-# TODO
 def view_any_submission_result(request):
+	if request.method == 'GET':
+		form = ViewSubmissionForm(request.GET)
+		if form.is_valid():
+			get_object_or_404(Submission, pk=form.submission_number)
+			return redirect(f'view_submission_result/{form.submission_number}/')
+		return failure('view_assignment_results/', error_list_from_form(form))
+
+	form = ViewSubmissionForm()
 	context = {
+		'form': form
 	}
 	return render(request, 'py_grader/view_any_submission_result.html', context)
 
@@ -123,10 +137,10 @@ def create_assignment(request):
 		if form.is_valid():
 			try:
 				process_assignment(form)
-				return success(request, 'create_assignment/', 'Successfully Created Assignment')
+				return success('create_assignment/', 'Successfully Created Assignment')
 			except Exception as e:
-				return failure(request, 'create_assignment/', str(e))
-		return failure(request, 'create_assignment/', error_list_from_form(form))
+				return failure('create_assignment/', str(e))
+		return failure('create_assignment/', error_list_from_form(form))
 
 	form = CreateAssignmentForm(grading_methods=GradingMethod.objects.all())
 	context = {
@@ -158,19 +172,17 @@ def grader_login(request):
 	return render(request, 'py_grader/grader_login.html', context)
 
 
-# TODO change this to redirect
-def success(request, back_path, message):
+def success(back_path, message):
 	context = {
 		'back_path': back_path,
 		'message': message
 	}
-	return render(request, 'py_grader/success.html', context)
+	return redirect('py_grader/success.html', context)
 
 
-# TODO change this to redirect
-def failure(request, back_path, errors):
+def failure(back_path, errors):
 	context = {
 		'back_path': back_path,
 		'errors': errors
 	}
-	return render(request, 'py_grader/failure.html', context)
+	return redirect('py_grader/failure.html', context)
