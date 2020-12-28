@@ -1,10 +1,24 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Remove NetID</title>
 </head>
-<body>
 
+<body style="margin: 0; padding: 50px">
+    <h1>PyGrader</h1>
+    <h1>Remove a NetID</h1>
+
+    <br>
+    <br>
+
+    <form action="/remove_net_id/" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Remove">
+    </form>
 </body>
+
 </html>

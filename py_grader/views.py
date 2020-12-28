@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from py_grader.handler import process_assignment, process_submission, process_test_submission
+from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
+	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db
 from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
-	ViewSubmissionForm, NetIDForm
+	ViewSubmissionForm, NetIDForm, CSVFileForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission, \
 	NetID
 from py_grader.util import error_list_from_form
@@ -162,15 +163,16 @@ def manage_net_ids(request):
 	return render(request, 'py_grader/manage_net_ids.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def add_net_id(request):
 	if request.method == 'POST':
 		form = NetIDForm(request.POST)
 		if form.is_valid():
-			get_object_or_404(NetID, net_id=form.net_id)
-			add_net_id_db(form)
-			return success('add_net_id/', 'Successfully Added NetID')
+			try:
+				add_net_id_db(form)
+				return success('add_net_id/', 'Successfully Added NetID')
+			except Exception as e:
+				return failure('add_net_id/', str(e))
 		return failure('add_net_id/', error_list_from_form(form))
 
 	form = NetIDForm()
@@ -180,28 +182,56 @@ def add_net_id(request):
 	return render(request, 'py_grader/add_net_id.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def remove_net_id(request):
+	if request.method == 'POST':
+		form = NetIDForm(request.POST)
+		if form.is_valid():
+			try:
+				remove_net_id_db(form)
+				return success('remove_net_id/', 'Successfully Removed NetID')
+			except Exception as e:
+				return failure('remove_net_id/', str(e))
+		return failure('remove_net_id/', error_list_from_form(form))
+
+	form = NetIDForm()
 	context = {
+		'form': form
 	}
 	return render(request, 'py_grader/remove_net_id.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def upload_net_id_csv(request):
+	if request.method == 'POST':
+		form = CSVFileForm(request.POST, request.FILES)
+		if form.is_valid():
+			try:
+				num_uploaded = upload_net_id_csv_db(form)
+				return success('upload_net_id_csv/', f'Successfully Uploaded {num_uploaded} NetIDs')
+			except Exception as e:
+				return failure('upload_net_id_csv/', str(e))
+		return failure('upload_net_id_csv/', error_list_from_form(form))
+
+	form = CSVFileForm()
 	context = {
+		'form': form
 	}
 	return render(request, 'py_grader/upload_net_id_csv.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def clear_net_id(request):
+	if request.method == 'POST':
+		try:
+			clear_net_id_db()
+			return success('clear_net_id/', 'Successfully Cleared NetIDs')
+		except Exception as e:
+			return failure('clear_net_id/', str(e))
+
 	context = {
 	}
-	return render(request, 'py_grader/clear_net_id.html', context)
+	return render(request, 'py_grader/remove_net_id.html', context)
 
 
 # TODO
@@ -216,7 +246,7 @@ def success(back_path, message):
 		'back_path': back_path,
 		'message': message
 	}
-	return redirect('py_grader/success.html', context)
+	return redirect('/success/', context)
 
 
 def failure(back_path, errors):
@@ -224,4 +254,4 @@ def failure(back_path, errors):
 		'back_path': back_path,
 		'errors': errors
 	}
-	return redirect('py_grader/failure.html', context)
+	return redirect('/failure/', context)

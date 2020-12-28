@@ -37,6 +37,10 @@ urlpatterns = [
 	path('add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
 
 	path('manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
+	path('add_net_id/', views.add_net_id, name='add_net_id'),
+	path('remove_net_id/', views.remove_net_id, name='remove_net_id'),
+	path('upload_net_id_csv/', views.upload_net_id_csv, name='upload_net_id_csv'),
+	path('clear_net_id/', views.clear_net_id, name='clear_net_id'),
 
 	path('grader_login/', views.grader_login, name='grader_login'),
 

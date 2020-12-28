@@ -1,5 +1,7 @@
 from datetime import datetime
 
+import pandas as pd
+
 from py_grader.docker_tools import CodeRunner
 from py_grader.models import Assignment, GradingMethod, NumberSubmissions, NetID, TestCase, SubmissionCaseResult, \
 	Submission, SubmissionResult
@@ -124,3 +126,35 @@ def process_submission(form, assignment_name, ip_address):
 	submission_result.submission_grade = grade
 	submission_result.save()
 	return submission_result.pk
+
+
+def add_net_id_db(form):
+	net_id = NetID()
+	net_id.net_id = form.cleaned_data.get('net_id')
+	net_id.save()
+
+
+def remove_net_id_db(form):
+	net_id = NetID.objects.get(net_id=form.cleaned_data.get('net_id'))
+	net_id.delete()
+
+
+def upload_net_id_csv_db(form):
+	in_memory_csv = form.cleaned_data.get('csv_file')
+	csv = pd.read_csv(in_memory_csv, names=['Name', 'NetID', 'Email', 'Major', 'Last View', 'Total Views', 'Something', 'Something else'])
+	csv = csv.iloc[1:]
+
+	num_saved = 0
+	for item in csv['NetID']:
+		try:
+			nid = NetID()
+			nid.net_id = item
+			nid.save()
+			num_saved += 1
+		except Exception as e:
+			print(f'Failed to Add {item}: {str(e)}')
+	return num_saved
+
+
+def clear_net_id_db():
+	NetID.objects.all().delete()

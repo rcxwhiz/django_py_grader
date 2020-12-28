@@ -1,10 +1,23 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Clear NetIDs</title>
 </head>
-<body>
 
+<body style="margin: 0; padding: 50px">
+    <h1>PyGrader</h1>
+    <h1>Clear NetIDs</h1>
+
+    <br>
+    <br>
+
+    <form action="/clear_net_id/" method="post">
+        {% csrf_token %}
+        <input type="submit" value="Clear">
+    </form>
 </body>
+
 </html>

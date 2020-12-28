@@ -1,10 +1,24 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Add NetID</title>
 </head>
-<body>
 
+<body style="margin: 0; padding: 50px">
+    <h1>PyGrader</h1>
+    <h1>Upload NetID CSV</h1>
+
+    <br>
+    <br>
+
+    <form action="/upload_net_id_csv/" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Upload">
+    </form>
 </body>
+
 </html>
