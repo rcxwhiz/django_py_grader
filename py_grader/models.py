@@ -37,11 +37,17 @@ class NumberSubmissions(models.Model):
 	number_submissions = models.IntegerField(verbose_name='Number Submissions', default=0)
 
 
+# TODO this needs to get divided into argv and files
 class TestCase(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, verbose_name='Assignment')
 	test_case_number = models.IntegerField(verbose_name='Test Case Number')
 	test_case_input = models.TextField(verbose_name='Test Case Input')
 	test_case_output = models.TextField(verbose_name='Test Case Output')
+
+
+class TestCaseFile(models.Model):
+	test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE, verbose_name='Test Case')
+	test_case_file = models.FileField(verbose_name='Test Case File', upload_to=f'test_case_files/{test_case.assignment.assignment_name}/{test_case.test_case_number}/')
 
 
 class SubmissionCaseResult(models.Model):

@@ -43,7 +43,8 @@ class CreateAssignmentForm(forms.Form):
 
 class AddTestCaseForm(forms.Form):
 	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
-	test_case_input = forms.CharField(label='Test Case Input', widget=forms.Textarea)
+	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea)
+	test_case_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
 	def __init__(self, assignments=None, *args, **kwargs):
 		super(AddTestCaseForm, self).__init__(*args, **kwargs)
@@ -52,6 +53,13 @@ class AddTestCaseForm(forms.Form):
 			for i in range(len(assignments)):
 				assignment_choices.append((i + 1, assignments[i].assignment_name))
 			self.fields['assignment_name'].choices = assignment_choices
+
+	def clean(self):
+		cleaned_data = super().clean()
+		for file in cleaned_data.get('test_case_files'):
+			if file.size > 4e6:
+				self.add_error('test_case_files', f'{file.name} Over 4 MB')
+		return cleaned_data
 
 
 class ChooseAssignmentForm(forms.Form):
