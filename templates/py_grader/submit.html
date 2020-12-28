@@ -15,13 +15,9 @@
     <br>
 
     <p>Choose an Assignment</p>
-    <form action="/action_page.php">
-        <label for="assignments">Assignment:    </label>
-        <select name="assignment" id="assignments">
-            {% for assignment in assignments %}
-                <option value="{{ assignment.pk }}">{{ assignment.assignment_name }}</option>
-            {% endfor %}
-        </select><br><br>
+    <form action="/submit/">
+        {% csrf_token %}
+        {{ form.as_p }}
         <input type="submit" value="Go">
     </form>
 </body>

@@ -1,8 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from py_grader.handler import process_assignment, process_submission
-from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
 from py_grader.util import error_list_from_form
 
@@ -16,9 +16,19 @@ def index(request):
 
 # TODO
 def submit(request):
-	assignments = Assignment.objects.order_by('close_time')
+	if request.method == 'GET':
+		form = ChooseAssignmentForm(request.GET)
+		if form.is_valid():
+			try:
+				Assignment.objects.get(assignment_name=form.assignment_name)
+				return redirect(f'submit/{form.assignment_name}/')
+			except Exception as e:
+				return failure(request, 'submit/', str(e))
+		return failure(request, 'submit/', error_list_from_form(form))
+
+	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
-		'assignments': assignments
+		'form': form
 	}
 	return render(request, 'py_grader/submit.html', context)
 
