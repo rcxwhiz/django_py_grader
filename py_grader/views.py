@@ -114,7 +114,6 @@ def view_any_submission_result(request):
 	return render(request, 'py_grader/view_any_submission_result.html', context)
 
 
-# TODO
 def view_submission_result(request, submission_id):
 	submission_result = get_object_or_404(SubmissionResult, submission=submission_id)
 	test_cases = TestCase.objects.order_by('test_case_number').filter(assignment=submission_result.submission.assignment.pk)

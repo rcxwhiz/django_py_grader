@@ -10,12 +10,24 @@
 <body style="margin: 0; padding: 50px">
     <p>submission id: {{ submission_result.pk }}</p>
     <p>grade: {{ submission_result.submission_grade }}</p>
-    {% for case in submission_test_cases %}
-        <p>test case number: {{ case.test_case_number }}</p>
-        <p>submission output: {{ case.submission_output }}</p>
-        <p>expected output: {{ case.expected_output }}</p>
-        <p>correct: {{ case.correct }}</p>
-    {% endfor %}
+    <table>
+        <tr>
+            <th>Test Case</th>
+            <th>Input</th>
+            <th>Expeceted Output</th>
+            <th>Actual Output</th>
+            <th>Correct</th>
+        </tr>
+        {% for case in submission_test_cases %}
+            <tr>
+                <td>{{ case.test_case_number }}</td>
+                <td>{{ case.test_case_input }}</td>
+                <td>{{ case.test_case_output }}</td>
+                <td>{{ case.student_output }}</td>
+                <td>{{ case.correct }}</td>
+            </tr>
+        {% endfor %}
+    </table>
 </body>
 
 </html>
