@@ -108,6 +108,8 @@ def process_submission(form, assignment_name, ip_address):
 	# run the code against each of those and make a list of results
 	submission_case_results = []
 	for test_case in test_cases:
+
+		# copy the files for the test case
 		test_case_files = TestCaseFile.objects.filter(test_case=test_case)
 		code_runner.clear_files()
 		for test_case_file in test_case_files:

@@ -4,10 +4,12 @@ from django.contrib.auth.decorators import login_required
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
 	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db
 from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
-	ViewSubmissionForm, NetIDForm, CSVFileForm
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission, \
-	NetID
+	ViewSubmissionForm, NetIDForm, CSVFileForm, AddTestCaseForm
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission
 from py_grader.util import error_list_from_form
+
+
+# TODO I should add back path variables for the methods that need them
 
 
 def index(request):
@@ -151,7 +153,19 @@ def create_assignment(request):
 # TODO
 @login_required(login_url='/admin')
 def add_test_case(request, assignment_name):
+	if request.method == 'POST':
+		form = AddTestCaseForm(request.POST, request.FILES)
+		if form.is_valid():
+			try:
+				add_test_case_db(form)
+				return success(request, f'add_test_case/{assignment_name}/', 'Successfully Added Test Case')
+			except Exception as e:
+				return failure(request, f'add_test_case/{assignment_name}/', str(e))
+		return failure(request, f'add_test_case/{assignment_name}/', error_list_from_form(form))
+
+	form = AddTestCaseForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
+		'form': form
 	}
 	return render(request, 'py_grader/add_test_case.html', context)
 
