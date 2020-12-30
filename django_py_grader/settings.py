@@ -122,3 +122,5 @@ STATIC_URL = '/static/'
 BOOTSTRAP4 = {
 	'include_jquery': True
 }
+
+LOGIN_REDIRECT_URL = '/'

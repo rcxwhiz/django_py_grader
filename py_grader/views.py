@@ -61,7 +61,7 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 
 
 # TODO this should redirect to a result?
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def test_submit_assignment(request, assignment_name, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = SubmitPyFile(request.POST, request.FILES)
@@ -87,7 +87,7 @@ def test_submit_assignment(request, assignment_name, success_message=None, failu
 	return render(request, 'py_grader/test_submit_assignment.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def view_results(request, success_message=None, failure_message=None):
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
@@ -109,7 +109,7 @@ def view_results_get(request):
 
 
 # TODO
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def view_assignment_results(request, assignment_name, success_message=None, failure_message=None):
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
@@ -159,7 +159,7 @@ def view_submission_result(request, submission_id, success_message=None, failure
 	return render(request, 'py_grader/view_submission_result.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def create_assignment(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
@@ -182,7 +182,7 @@ def create_assignment(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/create_assignment.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def add_test_case(request, assignment_name, success_message=None, failure_message=None):
 	get_object_or_404(Assignment, assignment_name=assignment_name)
 	if request.method == 'POST':
@@ -206,7 +206,7 @@ def add_test_case(request, assignment_name, success_message=None, failure_messag
 	return render(request, 'py_grader/add_test_case.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def manage_net_ids(request, success_message=None, failure_message=None):
 	context = {
 	}
@@ -217,10 +217,11 @@ def manage_net_ids(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/manage_net_ids.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def add_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = NetIDForm(request.POST)
+		request.method = 'GET'
 		if form.is_valid():
 			try:
 				add_net_id_db(form)
@@ -240,7 +241,7 @@ def add_net_id(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/add_net_id.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def remove_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = NetIDForm(request.POST)
@@ -263,7 +264,7 @@ def remove_net_id(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/remove_net_id.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def upload_net_id_csv(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = CSVFileForm(request.POST, request.FILES)
@@ -286,7 +287,7 @@ def upload_net_id_csv(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/upload_net_id_csv.html', context)
 
 
-@login_required(login_url='/admin')
+@login_required(redirect_field_name=f'/grader')
 def clear_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		try:
@@ -302,14 +303,3 @@ def clear_net_id(request, success_message=None, failure_message=None):
 	if failure_message:
 		context['failure_message'] = failure_message
 	return render(request, 'py_grader/remove_net_id.html', context)
-
-
-# TODO
-def grader_login(request, success_message=None, failure_message=None):
-	context = {
-	}
-	if success_message:
-		context['success_message'] = success_message
-	if failure_message:
-		context['failure_message'] = failure_message
-	return render(request, 'py_grader/grader_login.html', context)

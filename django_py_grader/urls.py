@@ -45,5 +45,5 @@ urlpatterns = [
 	path('upload_net_id_csv/', views.upload_net_id_csv, name='upload_net_id_csv'),
 	path('clear_net_id/', views.clear_net_id, name='clear_net_id'),
 
-	path('grader_login/', views.grader_login, name='grader_login')
+	path('accounts/', include('django.contrib.auth.urls'))
 ]
