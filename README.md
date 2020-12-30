@@ -85,5 +85,3 @@ A page the shows a failure message on successful operations.
 * Make sure there are enough links for the site to be appropiately nagivgatable.
 * Make the index page show relevant student links, and a link to an instructor index
 page with relevant links
-  
-* Change GET methods to work and not be recursive

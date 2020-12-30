@@ -26,9 +26,10 @@
     <br>
     <br>
 
-    <form action="/action_page.php">
-        <label for="submission_id">SubmissionID:    </label>
-        <input type="number" min="0" name="submission_id" id="submission_id"><br><br>
+    <p>Enter a Submission ID:</p>
+    <form action="/view_submission_results_get/">
+        {% csrf_token %}
+        {{ form.as_p }}
         <input type="submit" value="Go">
     </form>
 </body>

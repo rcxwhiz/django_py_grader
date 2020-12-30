@@ -191,3 +191,7 @@ def upload_net_id_csv_db(form):
 
 def clear_net_id_db():
 	NetID.objects.all().delete()
+
+
+def add_test_case_db(form):
+	pass

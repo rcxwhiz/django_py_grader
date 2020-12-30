@@ -34,7 +34,7 @@
     <br>
 
     <p>Choose an Assignment</p>
-    <form action="/submit/">
+    <form action="/submit_get/">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Go">

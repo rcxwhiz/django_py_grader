@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
-	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db
+	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db, add_test_case_db
 from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
 	ViewSubmissionForm, NetIDForm, CSVFileForm, AddTestCaseForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission
@@ -16,13 +16,6 @@ def index(request):
 
 
 def submit(request, success_message=None, failure_message=None):
-	if request.method == 'GET':
-		form = ChooseAssignmentForm(request.GET)
-		if form.is_valid():
-			get_object_or_404(Assignment, assignment_name=form.assignment_name)
-			return redirect(f'submit/{form.assignment_name}/')
-		return submit(request, failure_message=error_list_from_form(form))
-
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
 		'form': form
@@ -32,6 +25,14 @@ def submit(request, success_message=None, failure_message=None):
 	if failure_message:
 		context['failure_message'] = failure_message
 	return render(request, 'py_grader/submit.html', context)
+
+
+def submit_get(request):
+	form = ChooseAssignmentForm(request.GET)
+	if form.is_valid():
+		get_object_or_404(Assignment, assignment_name=form.assignment_name)
+		return redirect(f'submit/{form.assignment_name}/')
+	return submit(request, failure_message=error_list_from_form(form))
 
 
 def submit_assignment(request, assignment_name, success_message=None, failure_message=None):
@@ -88,13 +89,6 @@ def test_submit_assignment(request, assignment_name, success_message=None, failu
 
 @login_required(login_url='/admin')
 def view_results(request, success_message=None, failure_message=None):
-	if request.method == 'GET':
-		form = ChooseAssignmentForm(request.GET)
-		if form.is_valid():
-			get_object_or_404(Assignment, assigment_name=form.assignment_name)
-			return redirect(f'view_assignment_results/{form.assignment_name}/')
-		return view_results(request, failure_message=error_list_from_form(form))
-
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
 		'form': form
@@ -104,6 +98,14 @@ def view_results(request, success_message=None, failure_message=None):
 	if failure_message:
 		context['failure_message'] = failure_message
 	return render(request, 'py_grader/view_assignment_results.html', context)
+
+
+def view_results_get(request):
+	form = ChooseAssignmentForm(request.GET)
+	if form.is_valid():
+		get_object_or_404(Assignment, assigment_name=form.assignment_name)
+		return redirect(f'view_assignment_results/{form.assignment_name}/')
+	return view_results(request, failure_message=error_list_from_form(form))
 
 
 # TODO
@@ -121,13 +123,6 @@ def view_assignment_results(request, assignment_name, success_message=None, fail
 
 
 def view_any_submission_result(request, success_message=None, failure_message=None):
-	if request.method == 'GET':
-		form = ViewSubmissionForm(request.GET)
-		if form.is_valid():
-			get_object_or_404(Submission, pk=form.submission_number)
-			return redirect(f'view_submission_result/{form.submission_number}/')
-		return view_any_submission_result(request, failure_message=error_list_from_form(form))
-
 	form = ViewSubmissionForm()
 	context = {
 		'form': form
@@ -137,6 +132,14 @@ def view_any_submission_result(request, success_message=None, failure_message=No
 	if failure_message:
 		context['failure_message'] = failure_message
 	return render(request, 'py_grader/view_any_submission_result.html', context)
+
+
+def view_any_submission_result_get(request):
+	form = ViewSubmissionForm(request.GET)
+	if form.is_valid():
+		get_object_or_404(Submission, pk=form.submission_number)
+		return redirect(f'view_submission_result/{form.submission_number}/')
+	return view_any_submission_result(request, failure_message=error_list_from_form(form))
 
 
 def view_submission_result(request, submission_id, success_message=None, failure_message=None):
@@ -179,7 +182,6 @@ def create_assignment(request, success_message=None, failure_message=None):
 	return render(request, 'py_grader/create_assignment.html', context)
 
 
-# TODO
 @login_required(login_url='/admin')
 def add_test_case(request, assignment_name, success_message=None, failure_message=None):
 	get_object_or_404(Assignment, assignment_name=assignment_name)
