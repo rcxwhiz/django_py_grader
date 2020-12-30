@@ -3,6 +3,12 @@
 <html lang="en">
 
 <head>
+    <style>
+        footer {
+            position: absolute;
+            bottom: 10px;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>View Result: {{ submission_result.pk }}</title>
 </head>
@@ -47,5 +53,10 @@
     {% endfor %}
 </table>
 </body>
+
+<footer>
+    <p><a href="/">Home</a> | <a href="/submit">Submit</a> | <a href="/view_submission_result">View Submission
+        Result</a></p>
+</footer>
 
 </html>

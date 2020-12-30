@@ -3,6 +3,12 @@
 <html lang="en">
 
 <head>
+    <style>
+        footer {
+            position: absolute;
+            bottom: 10px;
+        }
+    </style>
     <meta charset="UTF-8">
     <title>Submit</title>
 </head>
@@ -10,9 +16,6 @@
 <body style="margin: 0; padding: 50px">
 <h1>PyGrader</h1>
 <h1>Submit Assignment</h1>
-
-<h1>PyGrader</h1>
-<h1>Clear NetIDs</h1>
 
 {% if success_message %}
     <br>
@@ -36,5 +39,10 @@
     <input type="submit" value="Go">
 </form>
 </body>
+
+<footer>
+    <p><a href="/">Home</a> | <a href="/submit">Submit</a> | <a href="/view_submission_result">View Submission
+        Result</a></p>
+</footer>
 
 </html>
