@@ -44,6 +44,7 @@ def submit_get(request):
 def submit_assignment(request, assignment_name, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = SubmitAssignmentForm(request.POST, request.FILES)
+		request.method = 'GET'
 		if form.is_valid():
 			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
@@ -71,6 +72,7 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 def test_submit_assignment(request, assignment_name, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = SubmitPyFile(request.POST, request.FILES)
+		request.method = 'GET'
 		if form.is_valid():
 			get_object_or_404(Assignment, assignment_name=assignment_name)
 			try:
@@ -169,6 +171,7 @@ def view_submission_result(request, submission_id, success_message=None, failure
 def create_assignment(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = CreateAssignmentForm(request.POST, request.FILES)
+		request.method = 'GET'
 		if form.is_valid():
 			try:
 				process_assignment(form)
@@ -193,6 +196,7 @@ def add_test_case(request, assignment_name, success_message=None, failure_messag
 	get_object_or_404(Assignment, assignment_name=assignment_name)
 	if request.method == 'POST':
 		form = AddTestCaseForm(request.POST, request.FILES)
+		request.method = 'GET'
 		if form.is_valid():
 			try:
 				add_test_case_db(form)
@@ -251,6 +255,7 @@ def add_net_id(request, success_message=None, failure_message=None):
 def remove_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = NetIDForm(request.POST)
+		request.method = 'GET'
 		if form.is_valid():
 			try:
 				remove_net_id_db(form)
@@ -274,6 +279,7 @@ def remove_net_id(request, success_message=None, failure_message=None):
 def upload_net_id_csv(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
 		form = CSVFileForm(request.POST, request.FILES)
+		request.method = 'GET'
 		if form.is_valid():
 			try:
 				num_uploaded = upload_net_id_csv_db(form)
@@ -296,6 +302,7 @@ def upload_net_id_csv(request, success_message=None, failure_message=None):
 @login_required(redirect_field_name=f'/grader')
 def clear_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
+		request.method = 'GET'
 		try:
 			clear_net_id_db()
 			return clear_net_id(request, success_message='Successfully Cleared NetIDs')
