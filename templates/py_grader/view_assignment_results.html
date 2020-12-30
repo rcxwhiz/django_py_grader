@@ -3,12 +3,14 @@
 <html lang="en">
 
 <head>
+    <style>
+        footer {
+            position: absolute;
+            bottom: 10px;
+        }
+    </style>
     <meta charset="UTF-8">
-    {% if assignment %}
-        <title>View Results: {{ assignment.assignment_name }}</title>
-    {% else %}
-        <title>View Results: Not Found</title>
-    {% endif %}
+    <title>View Results: {{ assignment.assignment_name }}</title>
 </head>
 
 <body style="margin: 0; padding: 50px">
@@ -30,5 +32,12 @@
 <br>
 <br>
 </body>
+
+<footer>
+    <p><a href="/grader">Grader Home</a> | <a href="/create_assignment">Create Assignment</a> | <a
+            href="/view_assignment_results">View Assignment
+        Results</a> | <a href="/manage_net_ids">Manage NetIDs</a> | <a href="/">Student Home</a> | <a
+            href="/view_submission_result">View Submission Result</a></p>
+</footer>
 
 </html>

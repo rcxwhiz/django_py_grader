@@ -114,11 +114,15 @@ class AddGradingMethodForm(forms.Form):
 	grading_method = forms.CharField(label='Grading Method', max_length=255)
 
 
-class NetIDForm(forms.Form):
+class NetIDNameForm(forms.Form):
 	net_id = forms.CharField(label='NetID', max_length=255)
 	name = forms.CharField(label='Name', max_length=255, required=False)
 	first_name = forms.CharField(label='First Name', max_length=255, required=False)
 	last_name = forms.CharField(label='Last Name', max_length=255, required=False)
+
+
+class NetIDForm(forms.Form):
+	net_id = forms.CharField(label='NetID', max_length=255)
 
 
 class CSVFileForm(forms.Form):

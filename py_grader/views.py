@@ -1,10 +1,10 @@
-from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404, redirect
 
+from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
+	ViewSubmissionForm, NetIDNameForm, CSVFileForm, AddTestCaseForm, NetIDForm
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
 	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db, add_test_case_db
-from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
-	ViewSubmissionForm, NetIDForm, CSVFileForm, AddTestCaseForm
 from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod, Submission
 from py_grader.util import error_list_from_form
 
@@ -230,7 +230,7 @@ def manage_net_ids(request, success_message=None, failure_message=None):
 @login_required(redirect_field_name=f'/grader')
 def add_net_id(request, success_message=None, failure_message=None):
 	if request.method == 'POST':
-		form = NetIDForm(request.POST)
+		form = NetIDNameForm(request.POST)
 		request.method = 'GET'
 		if form.is_valid():
 			try:
@@ -240,7 +240,7 @@ def add_net_id(request, success_message=None, failure_message=None):
 				return add_net_id(request, failure_message=str(e))
 		return add_net_id(request, failure_message=error_list_from_form(form))
 
-	form = NetIDForm()
+	form = NetIDNameForm()
 	context = {
 		'form': form
 	}
