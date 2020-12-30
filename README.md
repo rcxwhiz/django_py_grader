@@ -79,4 +79,5 @@ A page the shows a failure message on successful operations.
 * Test basic functionality
 * Honestly all the testing after that
 * A nice way for someone to deploy this
-* Make sure there are enough links for the site to be appropiately nagivgatable.
+* Make sure there are enough links for the site to be appropiately nagivgatable
+* Change site to use https
