@@ -8,30 +8,30 @@
 </head>
 
 <body style="margin: 0; padding: 50px">
-    <h1>PyGrader</h1>
-    <h1>View Results</h1>
+<h1>PyGrader</h1>
+<h1>View Results</h1>
 
-    {% if success_message %}
-        <br>
-
-        <h2>Success: {{ success_message }}</h2>
-    {% endif %}
-
-    {% if failure_message %}
-        <br>
-
-        <h2>Failure: {{ failure_message }}</h2>
-    {% endif %}
-
-    <br>
+{% if success_message %}
     <br>
 
-    <p>Choose an Assignment</p>
-    <form action="/view_assignment_results_get/">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <input type="submit" value="Go">
-    </form>
+    <h2>Success: {{ success_message }}</h2>
+{% endif %}
+
+{% if failure_message %}
+    <br>
+
+    <h2>Failure: {{ failure_message }}</h2>
+{% endif %}
+
+<br>
+<br>
+
+<p>Choose an Assignment</p>
+<form action="/view_assignment_results_get/">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Go">
+</form>
 </body>
 
 </html>

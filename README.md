@@ -75,11 +75,8 @@ A page that shows a success message on successful operations.
 A page the shows a failure message on successful operations.
 
 ## TODO:
-* Finish NetID functionality
-  * Allow "Name", "First Name", and "Last Name" optionally
 * Finish create test case functionality
 * Test basic functionality
 * Honestly all the testing after that
-* A message about changing the Django secret key if you are going to deploy this
-* A nice way for someone else to deploy this
+* A nice way for someone to deploy this
 * Make sure there are enough links for the site to be appropiately nagivgatable.

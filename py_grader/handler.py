@@ -184,6 +184,7 @@ def upload_net_id_csv_db(form):
 
 	num_saved = 0
 
+	# TODO this probably doesn't work
 	for i, row in csv.iterrows():
 		try:
 			nid = NetID()
@@ -204,4 +205,19 @@ def clear_net_id_db():
 
 
 def add_test_case_db(form):
-	pass
+	data = form.cleaned_data
+	test_case = TestCase()
+	assignment = Assignment.objects.get(assignment_name=data.get('assignment_name'))
+	test_case.assignment = assignment
+	assignment.number_test_cases += 1
+	test_case.test_case_number = assignment.number_test_cases
+	test_case.test_case_input = data.get('test_case_input')
+
+	for file in data.getlist('test_case_files'):
+		t_file = TestCaseFile()
+		t_file.test_case = test_case
+		t_file.test_case_file = file
+		t_file.save()
+
+	test_case.save()
+	assignment.save()
