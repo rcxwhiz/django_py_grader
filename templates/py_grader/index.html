@@ -17,6 +17,18 @@
     <h1>PY GRADER</h1>
     <p>Under Development By Josh Bedwell -> <a rel="noreferrer noopener" href="/https://github.com/rcxwhiz/django_py_grader" target="_blank">GitHub</a></p>
 
+    {% if success_message %}
+        <br>
+
+        <h2>Success: {{ success_message }}</h2>
+    {% endif %}
+
+    {% if failure_message %}
+        <br>
+
+        <h2>Failure: {{ failure_message }}</h2>
+    {% endif %}
+
     <br>
 
     <h3>Features:</h3>

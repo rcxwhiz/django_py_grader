@@ -8,6 +8,23 @@
 </head>
 
 <body>
+    <h1>PyGrader</h1>
+    <h1>Add Test Case: {{ assignment.assignment_name }}</h1>
+
+    {% if success_message %}
+        <br>
+
+        <h2>Success: {{ success_message }}</h2>
+    {% endif %}
+
+    {% if failure_message %}
+        <br>
+
+        <h2>Failure: {{ failure_message }}</h2>
+    {% endif %}
+
+    <br>
+    <br>
 
 </body>
 
