@@ -15,6 +15,12 @@ def index(request):
 	return render(request, 'py_grader/index.html', context)
 
 
+def grader_index(request):
+	context = {
+	}
+	return render(request, 'py_grader/grader_index.html', context)
+
+
 def submit(request, success_message=None, failure_message=None):
 	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
 	context = {
