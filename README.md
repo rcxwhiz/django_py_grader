@@ -78,9 +78,6 @@ A page the shows a failure message on successful operations.
 * Finish NetID functionality
   * Allow "Name", "First Name", and "Last Name" optionally
 * Finish create test case functionality
-* Instead of success/failure redirects, have each page have an optional section for
-success/failure message and reload the page
-  
 * Test basic functionality
 * Honestly all the testing after that
 * A message about changing the Django secret key if you are going to deploy this
@@ -88,3 +85,5 @@ success/failure message and reload the page
 * Make sure there are enough links for the site to be appropiately nagivgatable.
 * Make the index page show relevant student links, and a link to an instructor index
 page with relevant links
+  
+* Change GET methods to work and not be recursive
