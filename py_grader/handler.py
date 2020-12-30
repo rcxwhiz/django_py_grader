@@ -149,7 +149,12 @@ def process_submission(form, assignment_name, ip_address):
 
 def add_net_id_db(form):
 	net_id = NetID()
-	net_id.net_id = form.cleaned_data.get('net_id')
+	data = form.cleaned_data
+	net_id.net_id = data.get('net_id')
+	net_id.name = data.get('name')
+	net_id.first_name = data.get('first_name')
+	net_id.last_name = data.get('last_name')
+
 	net_id.save()
 
 
@@ -178,14 +183,19 @@ def upload_net_id_csv_db(form):
 		csv = pd.read_csv(in_memory_csv)
 
 	num_saved = 0
-	for item in csv['NetID']:
+
+	for i, row in csv.iterrows():
 		try:
 			nid = NetID()
-			nid.net_id = item
+			nid.net_id = row['NetID']
+			nid.name = row['Name']
+			nid.first_name = row['First Name']
+			nid.last_name = row['Last Name']
 			nid.save()
 			num_saved += 1
 		except Exception as e:
-			print(f'Failed to Add {item}: {str(e)}')
+			print(f'Failed to Add Row {i}: {str(e)}')
+
 	return num_saved
 
 

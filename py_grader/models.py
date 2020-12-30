@@ -22,6 +22,9 @@ class Assignment(models.Model):
 
 class NetID(models.Model):
 	net_id = models.CharField(verbose_name='NetID', unique=True, max_length=255)
+	name = models.CharField(verbose_name='Name', blank=True, max_length=255)
+	first_name = models.CharField(verbose_name='First Name', blank=True, max_length=255)
+	last_name = models.CharField(verbose_name='Last Name', blank=True, max_length=255)
 
 
 class Submission(models.Model):
