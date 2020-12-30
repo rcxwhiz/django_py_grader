@@ -11,7 +11,8 @@ class CreateAssignmentForm(forms.Form):
 	close_time = forms.DateTimeField(label='Close Time', widget=DateTimePickerInput())
 	number_submissions = forms.IntegerField(label='Number Submissions Allowed', initial=100, min_value=0)
 	grading_method = forms.ChoiceField(label='Grading Method', choices=[])
-	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255)
+	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
+	                                   required=False)
 
 	def __init__(self, grading_methods=None, *args, **kwargs):
 		super(CreateAssignmentForm, self).__init__(*args, **kwargs)
