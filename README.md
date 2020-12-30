@@ -83,5 +83,3 @@ A page the shows a failure message on successful operations.
 * A message about changing the Django secret key if you are going to deploy this
 * A nice way for someone else to deploy this
 * Make sure there are enough links for the site to be appropiately nagivgatable.
-* Make the index page show relevant student links, and a link to an instructor index
-page with relevant links
