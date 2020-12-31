@@ -27,11 +27,15 @@ urlpatterns = [
 	path('submit/', views.submit, name='submit'),
 	path('submit_get/', views.submit_get, name='submit_get'),
 	path('submit/<str:assignment_name>/', views.submit_assignment, name='submit_assignment'),
+
+	path('test_submit/', views.test_submit, name='test_submit'),
+	path('test_submit_get/', views.test_submit_get, name='test_submit_get'),
 	path('test_submit/<str:assignment_name>/', views.test_submit_assignment, name='test_submit_assignment'),
 
 	path('view_assignment_results/', views.view_results, name='view_results'),
 	path('view_assignment_results_get/', views.view_results_get, name='view_results_get'),
-	path('view_assignment_results/<str:assignment_name>/', views.view_assignment_results, name='view_assignment_results'),
+	path('view_assignment_results/<str:assignment_name>/', views.view_assignment_results,
+	     name='view_assignment_results'),
 
 	path('view_submission_result/', views.view_any_submission_result, name='view_any_submission_result'),
 	path('view_submission_result_get/', views.view_any_submission_result_get, name='view_any_submission_result_get'),

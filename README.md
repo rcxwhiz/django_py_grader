@@ -81,3 +81,7 @@ A page the shows a failure message on successful operations.
 * A nice way for someone to deploy this
 * Change site to use https
 * Make test submit selection page
+* Make a page to view current NetIDs
+    * It would be cool if there could be one page for viewing and adding/removing IDs
+
+* Make the URL paths make more sense by adding a grader and student layer
