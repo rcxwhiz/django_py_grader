@@ -32,7 +32,7 @@
 <br>
 <br>
 
-<form action="/upload_net_id_csv/" method="post" enctype="multipart/form-data">
+<form action="/grader/manage_net_ids/upload_net_id_csv/" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
     <input type="submit" value="Upload">
@@ -40,10 +40,10 @@
 </body>
 
 <footer>
-    <p><a href="/grader">Grader Home</a> | <a href="/create_assignment">Create Assignment</a> | <a
-            href="/view_assignment_results">View Assignment
-        Results</a> | <a href="/manage_net_ids">Manage NetIDs</a> | <a href="/">Student Home</a> | <a
-            href="/view_submission_result">View Submission Result</a></p>
+    <p><a href="/grader">Grader Home</a> | <a href="/grader/create_assignment">Create Assignment</a> | <a
+            href="/grader/view_assignment_results">View Assignment
+        Results</a> | <a href="/grader/manage_net_ids">Manage NetIDs</a> | <a href="/">Student Home</a> | <a
+            href="/grader/view_submission_result">View Submission Result</a></p>
 </footer>
 
 </html>

@@ -19,36 +19,42 @@ from django.urls import include, path
 from py_grader import views
 
 urlpatterns = [
+	# site utils
 	path('admin/', admin.site.urls),
 
+	# student pages
 	path('', views.index, name='index'),
-	path('grader/', views.grader_index, name='grader_index'),
 
 	path('submit/', views.submit, name='submit'),
 	path('submit_get/', views.submit_get, name='submit_get'),
 	path('submit/<str:assignment_name>/', views.submit_assignment, name='submit_assignment'),
 
-	path('test_submit/', views.test_submit, name='test_submit'),
-	path('test_submit_get/', views.test_submit_get, name='test_submit_get'),
-	path('test_submit/<str:assignment_name>/', views.test_submit_assignment, name='test_submit_assignment'),
-
-	path('view_assignment_results/', views.view_results, name='view_results'),
-	path('view_assignment_results_get/', views.view_results_get, name='view_results_get'),
-	path('view_assignment_results/<str:assignment_name>/', views.view_assignment_results,
-	     name='view_assignment_results'),
-
 	path('view_submission_result/', views.view_any_submission_result, name='view_any_submission_result'),
 	path('view_submission_result_get/', views.view_any_submission_result_get, name='view_any_submission_result_get'),
 	path('view_submission_result/<int:submission_id>/', views.view_submission_result, name='view_submission_result'),
 
-	path('create_assignment/', views.create_assignment, name='create_assignment'),
-	path('add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
+	# grader pages
+	path('grader/', views.grader_index, name='grader_index'),
 
-	path('manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
-	path('add_net_id/', views.add_net_id, name='add_net_id'),
-	path('remove_net_id/', views.remove_net_id, name='remove_net_id'),
-	path('upload_net_id_csv/', views.upload_net_id_csv, name='upload_net_id_csv'),
-	path('clear_net_id/', views.clear_net_id, name='clear_net_id'),
+	path('grader/test_submit/', views.test_submit, name='test_submit'),
+	path('grader/test_submit_get/', views.test_submit_get, name='test_submit_get'),
+	path('grader/test_submit/<str:assignment_name>/', views.test_submit_assignment, name='test_submit_assignment'),
+
+	path('grader/view_assignment_results/', views.view_results, name='view_results'),
+	path('grader/view_assignment_results_get/', views.view_results_get, name='view_results_get'),
+	path('graeder/view_assignment_results/<str:assignment_name>/', views.view_assignment_results,
+	     name='view_assignment_results'),
+
+	path('grader/create_assignment/', views.create_assignment, name='create_assignment'),
+	# TODO view assignments
+	path('grader/add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
+
+	path('grader/manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
+	# TODO view net ids
+	path('grader/manage_net_ids/add_net_id/', views.add_net_id, name='add_net_id'),
+	path('grader/manage_net_ids/remove_net_id/', views.remove_net_id, name='remove_net_id'),
+	path('grader/manage_net_ids/upload_net_id_csv/', views.upload_net_id_csv, name='upload_net_id_csv'),
+	path('grader/manage_net_ids/clear_net_id/', views.clear_net_id, name='clear_net_id'),
 
 	path('accounts/', include('django.contrib.auth.urls'))
 ]

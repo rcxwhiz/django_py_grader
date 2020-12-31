@@ -79,9 +79,9 @@ A page the shows a failure message on successful operations.
 * Test basic functionality
 * Honestly all the testing after that
 * A nice way for someone to deploy this
-* Change site to use https
 * Make test submit selection page
 * Make a page to view current NetIDs
     * It would be cool if there could be one page for viewing and adding/removing IDs
 
-* Make the URL paths make more sense by adding a grader and student layer
+* I need to find a way to fix constructors of forms
+* Make a grader version of the view submission result that is identifying

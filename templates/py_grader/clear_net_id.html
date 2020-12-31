@@ -32,17 +32,17 @@
 <br>
 <br>
 
-<form action="/clear_net_id/" method="post">
+<form action="/grader/manage_net_ids/clear_net_id/" method="post">
     {% csrf_token %}
     <input type="submit" value="Clear">
 </form>
 </body>
 
 <footer>
-    <p><a href="/grader">Grader Home</a> | <a href="/create_assignment">Create Assignment</a> | <a
-            href="/view_assignment_results">View Assignment
-        Results</a> | <a href="/manage_net_ids">Manage NetIDs</a> | <a href="/">Student Home</a> | <a
-            href="/view_submission_result">View Submission Result</a></p>
+    <p><a href="/grader">Grader Home</a> | <a href="/grader/create_assignment">Create Assignment</a> | <a
+            href="/grader/view_assignment_results">View Assignment
+        Results</a> | <a href="/grader/manage_net_ids">Manage NetIDs</a> | <a href="/">Student Home</a> | <a
+            href="/grader/view_submission_result">View Submission Result</a></p>
 </footer>
 
 </html>
