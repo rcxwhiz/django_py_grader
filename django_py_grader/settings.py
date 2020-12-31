@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,3 +124,29 @@ BOOTSTRAP4 = {
 }
 
 LOGIN_REDIRECT_URL = '/grader'
+
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'handlers': {
+		'file': {
+			'level': 'DEBUG',
+			'class': 'logging.FileHandler',
+			'filename': 'debug.log',
+		},
+		'console': {
+			'class': 'logging.StreamHandler',
+		},
+	},
+	'root': {
+		'handlers': ['console'],
+		'level': 'DEBUG',
+	},
+	'loggers': {
+		'django': {
+			'handlers': ['console'],
+			'level': os.getenv('DJANGO_LOG_LEVEL', 'WARNING'),
+			'propagate': False,
+		},
+	},
+}

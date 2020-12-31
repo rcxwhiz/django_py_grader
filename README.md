@@ -85,3 +85,5 @@ A page the shows a failure message on successful operations.
 
 * I need to find a way to fix constructors of forms
 * Make a grader version of the view submission result that is identifying
+* Investigate db indexing for performance benefits
+* Create or use a loggin system
