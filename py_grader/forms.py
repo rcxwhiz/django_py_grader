@@ -14,8 +14,13 @@ class CreateAssignmentForm(forms.Form):
 	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
 	                                   required=False)
 
-	def __init__(self, grading_methods=None, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
+		grading_methods = kwargs['grading_methods'] if 'grading_methods' in kwargs else None
+		if 'grading_methods' in kwargs:
+			del kwargs['grading_methods']
+
 		super(CreateAssignmentForm, self).__init__(*args, **kwargs)
+
 		if grading_methods:
 			grading_choices = []
 			for grading_method in grading_methods:
@@ -47,9 +52,14 @@ class AddTestCaseForm(forms.Form):
 	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea)
 	test_case_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
-	def __init__(self, assignments=None, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
+		assignments = kwargs['assignments'] if 'assignments' in kwargs else None
+		if 'assignments' in kwargs:
+			del kwargs['assignments']
+
 		super(AddTestCaseForm, self).__init__(*args, **kwargs)
-		if assignments:
+
+		if 'assignments' in assignments:
 			assignment_choices = []
 			for i in range(len(assignments)):
 				assignment_choices.append((i + 1, assignments[i].assignment_name))
@@ -66,8 +76,13 @@ class AddTestCaseForm(forms.Form):
 class ChooseAssignmentForm(forms.Form):
 	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
 
-	def __init__(self, assignments=None, *args, **kwargs):
+	def __init__(self, *args, **kwargs):
+		assignments = kwargs['assignments'] if 'assignments' in kwargs else None
+		if 'assignments' in kwargs:
+			del kwargs['assignments']
+
 		super(ChooseAssignmentForm, self).__init__(*args, **kwargs)
+
 		if assignments:
 			assignment_choices = []
 			for i in range(len(assignments)):
