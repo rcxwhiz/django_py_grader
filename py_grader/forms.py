@@ -1,7 +1,7 @@
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 
-from py_grader.models import Assignment, NetID
+from py_grader.models import Assignment, NetID, GradingMethod
 
 
 class CreateAssignmentForm(forms.Form):
@@ -10,7 +10,8 @@ class CreateAssignmentForm(forms.Form):
 	open_time = forms.DateTimeField(label='Open Time', widget=DateTimePickerInput())
 	close_time = forms.DateTimeField(label='Close Time', widget=DateTimePickerInput())
 	number_submissions = forms.IntegerField(label='Number Submissions Allowed', initial=100, min_value=0)
-	grading_method = forms.ChoiceField(label='Grading Method', choices=[])
+	grading_method = forms.ModelChoiceField(label='Grading Method', queryset=GradingMethod.objects.all(),
+	                                        empty_label='Choose a Grading Method')
 	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
 	                                   required=False)
 
@@ -21,11 +22,9 @@ class CreateAssignmentForm(forms.Form):
 
 		super(CreateAssignmentForm, self).__init__(*args, **kwargs)
 
-		if grading_methods:
-			grading_choices = []
-			for grading_method in grading_methods:
-				grading_choices.append((grading_method.pk, grading_method.grading_method))
-			self.fields['grading_method'].choices = grading_choices
+	# if grading_methods:
+	# 	self.grading_method = forms.CharField(label='Grading Method', choices=[(grading_method.pk, grading_method.grading_method) for grading_method in grading_methods])
+	# self.fields['grading_method'].choices = [(grading_method.pk, grading_method.grading_method) for grading_method in grading_methods]
 
 	def clean(self):
 		cleaned_data = super().clean()

@@ -37,7 +37,7 @@ def process_assignment(form):
 
 # TODO
 def process_test_submission(form, assignment_name):
-	pass
+	logger.info('Process test submission unimplemented')
 
 
 class SubmissionException(Exception):

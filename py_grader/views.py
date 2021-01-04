@@ -246,11 +246,11 @@ def create_assignment(request, success_message=None, failure_message=None):
 		if form.is_valid():
 			logger.debug('Valid create assignment form')
 			try:
-				logger.debug(f'Creating assignment: {form.assignment_name}')
+				logger.debug(f'Creating assignment: {form.cleaned_data["assignment_name"]}')
 				process_assignment(form)
 				return create_assignment(request, success_message='Successfully Created Assignment')
 			except Exception as e:
-				logging.info(f'Error creating assignment {form.assignment_name} - e: {str(e)}')
+				logging.info(f'Error creating assignment {form.form.cleaned_data["assignment_name"]} - e: {str(e)}')
 				return create_assignment(request, failure_message=str(e))
 		logger.debug(f'Invalid create assignment form: {error_list_from_form(form)}')
 		return create_assignment(request, failure_message=error_list_from_form(form))
