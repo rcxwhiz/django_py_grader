@@ -165,7 +165,6 @@ gen
 # Translations
 
 # Django stuff:
-django_py_grader/secret_key.py
 
 # Flask stuff:
 
