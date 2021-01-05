@@ -31,6 +31,28 @@
 
 <br>
 <br>
+
+<table>
+    <tr>
+        <th>NetID</th>
+        <th>Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Number Submissions</th>
+        <th>Grade</th>
+    </tr>
+    {% for student in students %}
+        <tr>
+            <td>{{ student.net_id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.first_name }}</td>
+            <td>{{ student.last_name }}</td>
+            <td>{{ student.num_submissions }}</td>
+            <td>{{ student.grade }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
 </body>
 
 <footer>

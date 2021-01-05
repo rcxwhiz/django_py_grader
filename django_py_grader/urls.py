@@ -45,7 +45,7 @@ urlpatterns = [
 
 	path('grader/view_assignment_results/', views.view_results, name='view_results'),
 	path('grader/view_assignment_results_get/', views.view_results_get, name='view_results_get'),
-	path('graeder/view_assignment_results/<str:assignment_name>/', views.view_assignment_results,
+	path('grader/view_assignment_results/<str:assignment_name>/', views.view_assignment_results,
 	     name='view_assignment_results'),
 
 	path('grader/create_assignment/', views.create_assignment, name='create_assignment'),
@@ -55,7 +55,6 @@ urlpatterns = [
 	path('grader/add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
 
 	path('grader/manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),
-	# TODO view net ids
 	path('grader/manage_net_ids/add_net_id/', views.add_net_id, name='add_net_id'),
 	path('grader/manage_net_ids/remove_net_id/', views.remove_net_id, name='remove_net_id'),
 	path('grader/manage_net_ids/upload_net_id_csv/', views.upload_net_id_csv, name='upload_net_id_csv'),

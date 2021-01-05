@@ -35,6 +35,14 @@ def process_assignment(form):
 	logger.debug(f'Saving assignment: {data.get("assignment_name")}')
 	assignment.save()
 
+	logger.debug('Initializing student submissions to 0')
+	for net_id in NetID.objects.all():
+		num_submissions = NumberSubmissions()
+		num_submissions.net_id = net_id
+		num_submissions.assignment = assignment
+		num_submissions.number_submissions = 0
+		num_submissions.save()
+
 
 # TODO
 def process_test_submission(form, assignment_name):
@@ -204,6 +212,15 @@ def add_net_id_db(form):
 	logger.debug('Saving NetID')
 	net_id.save()
 
+	logger.debug('Initializing student submissions to 0')
+	assignments = Assignment.objects.all()
+	for assignment in assignments:
+		num_submissions = NumberSubmissions()
+		num_submissions.net_id = net_id
+		num_submissions.assignment = assignment
+		num_submissions.number_submissions = 0
+		num_submissions.save()
+
 
 def remove_net_id_db(form):
 	logger.info(f'Removing NetID: {form.cleaned_data.get("net_id")}')
@@ -292,3 +309,22 @@ def add_grading_methods_to_db():
 			method.save()
 		except IntegrityError:
 			pass
+
+
+def get_student_assignment_report(assignment):
+	students = [
+		{'net_id': net_id.net_id, 'name': net_id.name, 'first_name': net_id.first_name, 'last_name': net_id.last_name}
+		for net_id in NetID.objects.order_by('net_id')]
+	for student in students:
+		net_id = NetID.objects.get(net_id=student['net_id'])
+		num_submissions = NumberSubmissions.objects.get(net_id=student['net_id'], assignment=assignment)
+		student['num_submissions'] = num_submissions
+		if num_submissions == 0:
+			student['grade'] = 0
+		else:
+			last_submission = Submission.objects.get(assignment_name=assignment, net_id=net_id,
+			                                         submission_number=num_submissions)
+			last_submission_result = SubmissionResult.objects.get(submission=last_submission)
+			student['grade'] = last_submission_result.submission_grade
+
+	return students

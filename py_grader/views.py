@@ -6,8 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
 	ViewSubmissionForm, NetIDNameForm, CSVFileForm, AddTestCaseForm, NetIDForm
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
-	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db, add_test_case_db
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
+	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db, add_test_case_db, get_student_assignment_report
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, NetID
 from py_grader.util import error_list_from_form
 
 logger = logging.getLogger(__name__)
@@ -179,8 +179,10 @@ def view_results_get(request):
 def view_assignment_results(request, assignment_name, success_message=None, failure_message=None):
 	logger.debug('Serving view assignment results')
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
+	student_report_dict = get_student_assignment_report(assignment)
 	context = {
-		'assignment': assignment
+		'assignment': assignment,
+		'students': student_report_dict
 	}
 	if success_message:
 		context['success_message'] = success_message
@@ -331,6 +333,7 @@ def add_test_case(request, assignment_name, success_message=None, failure_messag
 def manage_net_ids(request, success_message=None, failure_message=None):
 	logger.debug('Serving manage net ids')
 	context = {
+		'net_ids': NetID.objects.order_by('net_id')
 	}
 	if success_message:
 		context['success_message'] = success_message

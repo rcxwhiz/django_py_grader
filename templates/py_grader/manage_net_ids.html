@@ -36,6 +36,24 @@
 <p><a href="/grader/manage_net_ids/remove_net_id/">Remove NetID</a></p>
 <p><a href="/grader/manage_net_ids/upload_net_id_csv/">Upload NetID CSV</a></p>
 <p><a href="/grader/manage_net_ids/clear_net_id/">Clear NetIDs</a></p>
+
+<table>
+    <tr>
+        <th>NetID</th>
+        <th>Name</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+    </tr>
+    {% for net_id in net_ids %}
+        <tr>
+            <td>{{ net_id.net_id }}</td>
+            <td>{{ net_id.name }}</td>
+            <td>{{ net_id.first_name }}</td>
+            <td>{{ net_id.last_name }}</td>
+        </tr>
+    {% endfor %}
+</table>
+
 </body>
 
 <footer>
