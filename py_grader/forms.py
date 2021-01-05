@@ -1,7 +1,7 @@
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 
-import config as cfg
+import py_grader.config as cfg
 from py_grader.models import Assignment, NetID, GradingMethod
 
 

@@ -422,3 +422,12 @@ def clear_net_id(request, success_message=None, failure_message=None):
 	if failure_message:
 		context['failure_message'] = failure_message
 	return render(request, 'py_grader/remove_net_id.html', context)
+
+
+@login_required(redirect_field_name='/grader')
+def assignments(request):
+	logger.debug('Serving View Assignments')
+	context = {
+		'assignments': Assignment.objects.order_by('close_time')
+	}
+	return render(request, 'py_grader/view_assignments.html', context)
