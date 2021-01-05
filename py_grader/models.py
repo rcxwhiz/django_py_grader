@@ -20,7 +20,7 @@ class Assignment(models.Model):
 	number_submissions_allowed = models.IntegerField(verbose_name='Number Submissions Allowed', default=100)
 	number_test_cases = models.IntegerField(verbose_name='Number Test Cases', default=0)
 	grading_method = models.ForeignKey(GradingMethod, on_delete=models.PROTECT, verbose_name='Grading Method')
-	allowed_packages = models.CharField(verbose_name='Allowed Packages', max_length=255, blank=True)
+	allowed_packages = models.CharField(verbose_name='Allowed Packages', max_length=255, blank=True, null=True)
 
 	def __str__(self):
 		return self.assignment_name

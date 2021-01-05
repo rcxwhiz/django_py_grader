@@ -1,6 +1,7 @@
 from bootstrap_datepicker_plus import DateTimePickerInput
 from django import forms
 
+import config as cfg
 from py_grader.models import Assignment, NetID, GradingMethod
 
 
@@ -12,7 +13,7 @@ class CreateAssignmentForm(forms.Form):
 	number_submissions = forms.IntegerField(label='Number Submissions Allowed', initial=100, min_value=0)
 	grading_method = forms.ModelChoiceField(label='Grading Method', queryset=GradingMethod.objects.all())
 	# TODO change this to checkboxes???
-	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
+	allowed_packages = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
 	                                   required=False)
 
 	def clean(self):
@@ -26,9 +27,8 @@ class CreateAssignmentForm(forms.Form):
 		code = cleaned_data.get('key_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('key_source_code', 'File Type Must be .py')
-		# TODO got a magic number here
-		if code.size > 4e6:
-			self.add_error('key_source_code', 'File Over 4 MB')
+		if code.size > cfg.upload_limit:
+			self.add_error('key_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
 		open_time = cleaned_data.get('open_time')
 		close_time = cleaned_data.get('close_time')
 		if open_time > close_time:
@@ -45,8 +45,8 @@ class AddTestCaseForm(forms.Form):
 	def clean(self):
 		cleaned_data = super().clean()
 		for file in cleaned_data.getlist('test_case_files'):
-			if file.size > 4e6:
-				self.add_error('test_case_files', f'{file.name} Over 4 MB')
+			if file.size > cfg.upload_limit:
+				self.add_error('test_case_files', f'{file.name} Over {cfg.upload_limit / 1e6} MB')
 		return cleaned_data
 
 
@@ -69,8 +69,8 @@ class SubmitAssignmentForm(forms.Form):
 		code = cleaned_data.get('student_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('student_source_code', 'File Type Must be .py')
-		if code.size > 4e6:
-			self.add_error('student_source_code', 'File over 4MB')
+		if code.size > cfg.upload_limit:
+			self.add_error('student_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
 		return cleaned_data
 
 
@@ -82,8 +82,8 @@ class SubmitPyFile(forms.Form):
 		code = cleaned_data.get('source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('source_code', 'File Type Must be .py')
-		if code.size > 4e6:
-			self.add_error('student_source_code', 'File Over 4MB')
+		if code.size > cfg.upload_limit:
+			self.add_error('student_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
 		return cleaned_data
 
 
@@ -114,6 +114,6 @@ class CSVFileForm(forms.Form):
 		csv = cleaned_data.get('csv_file')
 		if not csv.name.endswith('.csv'):
 			self.add_error('csv_file', 'File Type Must be .csv')
-		if csv.size > 4e6:
-			self.add_error('csv_file', 'File Over 4MB')
+		if csv.size > cfg.upload_limit:
+			self.add_error('csv_file', f'File Over {cfg.upload_limit / 1e6} MB')
 		return cleaned_data

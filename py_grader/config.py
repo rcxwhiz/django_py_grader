@@ -1,1 +1,1 @@
-# TODO set a global file size limit
+upload_limit = 4e6

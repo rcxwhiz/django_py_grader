@@ -5,7 +5,7 @@ from datetime import datetime
 import pandas as pd
 
 from py_grader.docker_tools import CodeRunner
-from py_grader.models import Assignment, GradingMethod, NumberSubmissions, NetID, TestCase, SubmissionCaseResult, \
+from py_grader.models import Assignment, NumberSubmissions, NetID, TestCase, SubmissionCaseResult, \
 	Submission, SubmissionResult, TestCaseFile
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def process_assignment(form):
 	assignment.number_students_submited = 0
 	assignment.number_submissions_allowed = data.get('number_submissions')
 	assignment.number_test_cases = 0
-	assignment.grading_method = GradingMethod.objects.get(pk=data.get('grading_method'))
+	assignment.grading_method = data.get('grading_method')
 	assignment.allowed_packages = data.get('allowed_packages')
 	logger.debug(f'Saving assignment: {data.get("assignment_name")}')
 	assignment.save()
