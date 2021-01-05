@@ -63,6 +63,8 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
+django_py_grader/secret_key.py
+
 # Flask stuff:
 instance/
 .webassets-cache
