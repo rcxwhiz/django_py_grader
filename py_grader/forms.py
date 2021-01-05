@@ -10,21 +10,10 @@ class CreateAssignmentForm(forms.Form):
 	open_time = forms.DateTimeField(label='Open Time', widget=DateTimePickerInput())
 	close_time = forms.DateTimeField(label='Close Time', widget=DateTimePickerInput())
 	number_submissions = forms.IntegerField(label='Number Submissions Allowed', initial=100, min_value=0)
-	grading_method = forms.ModelChoiceField(label='Grading Method', queryset=GradingMethod.objects.all(),
-	                                        empty_label='Choose a Grading Method')
+	grading_method = forms.ModelChoiceField(label='Grading Method', queryset=GradingMethod.objects.all())
+	# TODO change this to checkboxes???
 	allowed_pacakges = forms.CharField(label='Allowed Packages (Seperated by Whitespace)', max_length=255,
 	                                   required=False)
-
-	def __init__(self, *args, **kwargs):
-		grading_methods = kwargs['grading_methods'] if 'grading_methods' in kwargs else None
-		if 'grading_methods' in kwargs:
-			del kwargs['grading_methods']
-
-		super(CreateAssignmentForm, self).__init__(*args, **kwargs)
-
-	# if grading_methods:
-	# 	self.grading_method = forms.CharField(label='Grading Method', choices=[(grading_method.pk, grading_method.grading_method) for grading_method in grading_methods])
-	# self.fields['grading_method'].choices = [(grading_method.pk, grading_method.grading_method) for grading_method in grading_methods]
 
 	def clean(self):
 		cleaned_data = super().clean()
@@ -37,6 +26,7 @@ class CreateAssignmentForm(forms.Form):
 		code = cleaned_data.get('key_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('key_source_code', 'File Type Must be .py')
+		# TODO got a magic number here
 		if code.size > 4e6:
 			self.add_error('key_source_code', 'File Over 4 MB')
 		open_time = cleaned_data.get('open_time')
@@ -47,22 +37,10 @@ class CreateAssignmentForm(forms.Form):
 
 
 class AddTestCaseForm(forms.Form):
-	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
+	assignment_name = forms.ModelChoiceField(label='Assignment', queryset=Assignment.objects.order_by('close_time'),
+	                                         to_field_name='assignment_name')
 	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea)
 	test_case_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
-
-	def __init__(self, *args, **kwargs):
-		assignments = kwargs['assignments'] if 'assignments' in kwargs else None
-		if 'assignments' in kwargs:
-			del kwargs['assignments']
-
-		super(AddTestCaseForm, self).__init__(*args, **kwargs)
-
-		if 'assignments' in assignments:
-			assignment_choices = []
-			for i in range(len(assignments)):
-				assignment_choices.append((i + 1, assignments[i].assignment_name))
-			self.fields['assignment_name'].choices = assignment_choices
 
 	def clean(self):
 		cleaned_data = super().clean()
@@ -73,20 +51,8 @@ class AddTestCaseForm(forms.Form):
 
 
 class ChooseAssignmentForm(forms.Form):
-	assignment_name = forms.ChoiceField(label='Assignment', choices=[])
-
-	def __init__(self, *args, **kwargs):
-		assignments = kwargs['assignments'] if 'assignments' in kwargs else None
-		if 'assignments' in kwargs:
-			del kwargs['assignments']
-
-		super(ChooseAssignmentForm, self).__init__(*args, **kwargs)
-
-		if assignments:
-			assignment_choices = []
-			for i in range(len(assignments)):
-				assignment_choices.append((i + 1, assignments[i].assignment_name))
-			self.fields['assignment_name'].choices = assignment_choices
+	assignment_name = forms.ModelChoiceField(label='Assignment', queryset=Assignment.objects.order_by('close_time'),
+	                                         to_field_name='assignment_name')
 
 
 class SubmitAssignmentForm(forms.Form):

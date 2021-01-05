@@ -7,7 +7,7 @@ from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAs
 	ViewSubmissionForm, NetIDNameForm, CSVFileForm, AddTestCaseForm, NetIDForm
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
 	remove_net_id_db, clear_net_id_db, upload_net_id_csv_db, add_test_case_db
-from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase, GradingMethod
+from py_grader.models import Assignment, SubmissionResult, SubmissionCaseResult, TestCase
 from py_grader.util import error_list_from_form
 
 logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ def grader_index(request):
 
 def submit(request, success_message=None, failure_message=None):
 	logger.debug('Serving submit menu')
-	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
+	form = ChooseAssignmentForm()
 	context = {
 		'form': form
 	}
@@ -88,7 +88,7 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 
 def test_submit(request, success_message=None, failure_message=None):
 	logger.debug('Serving test submit menu')
-	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
+	form = ChooseAssignmentForm()
 	context = {
 		'form': form
 	}
@@ -151,7 +151,7 @@ def test_submit_assignment(request, assignment_name, success_message=None, failu
 @login_required(redirect_field_name='/grader')
 def view_results(request, success_message=None, failure_message=None):
 	logger.debug('Serving view assignment results menu')
-	form = ChooseAssignmentForm(assignments=Assignment.objects.order_by('close_time'))
+	form = ChooseAssignmentForm()
 	context = {
 		'form': form
 	}
@@ -256,7 +256,7 @@ def create_assignment(request, success_message=None, failure_message=None):
 		return create_assignment(request, failure_message=error_list_from_form(form))
 
 	logger.debug('Serving create assignment')
-	form = CreateAssignmentForm(grading_methods=GradingMethod.objects.all())
+	form = CreateAssignmentForm()
 	context = {
 		'form': form
 	}
@@ -288,7 +288,7 @@ def add_test_case(request, assignment_name, success_message=None, failure_messag
 		return add_test_case(request, assignment_name, error_list_from_form(form))
 
 	logger.debug('Serving add test case')
-	form = AddTestCaseForm(assignments=Assignment.objects.order_by('close_time'))
+	form = AddTestCaseForm()
 	context = {
 		'form': form
 	}
