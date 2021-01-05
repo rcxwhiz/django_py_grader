@@ -1,6 +1,9 @@
+import logging
 import os
 
 from django.db import models
+
+logger = logging.getLogger(__name__)
 
 
 class GradingMethod(models.Model):
@@ -68,13 +71,13 @@ class TestCase(models.Model):
 
 
 def content_file_name(test_case_file, filename):
+	logger.debug(f'Getting a filname for {filename} in {test_case_file.test_case.assignment}')
 	return os.sep.join(['test_case_files', test_case_file.test_case.assignment.assignment_name,
-	                    test_case_file.test_case.test_case_number, filename])
+	                    str(test_case_file.test_case.test_case_number), filename])
 
 
 class TestCaseFile(models.Model):
 	test_case = models.ForeignKey(TestCase, on_delete=models.CASCADE, verbose_name='Test Case')
-	# TODO I don't really know how this is working
 	test_case_file = models.FileField(verbose_name='Test Case File', upload_to=content_file_name)
 
 	def __str__(self):

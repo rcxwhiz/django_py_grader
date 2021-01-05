@@ -268,6 +268,33 @@ def create_assignment(request, success_message=None, failure_message=None):
 
 
 @login_required(redirect_field_name='/grader')
+def add_any_test_case(request, success_message=None, failure_message=None):
+	logger.debug('Serving add any test case')
+	form = ChooseAssignmentForm()
+	context = {
+		'form': form
+	}
+	if success_message:
+		context['success_message'] = success_message
+	if failure_message:
+		context['failure_message'] = failure_message
+	return render(request, 'py_grader/add_any_test_case.html', context)
+
+
+def add_any_test_case_get(request):
+	logger.debug('Serving add any test case get')
+	form = ChooseAssignmentForm(request.GET)
+	if form.is_valid():
+		logger.debug('Valid add any test case form')
+		assignment_name = form.cleaned_data['assignment_name']
+		get_object_or_404(Assignment, assignment_name=assignment_name)
+		logger.debug(f'Found assignment: {assignment_name}')
+		return redirect(f'/grader/add_test_case/{assignment_name}')
+	logger.debug(f'Invalid add any test case form: {error_list_from_form(form)}')
+	return add_any_test_case(request, failure_message=error_list_from_form(form))
+
+
+@login_required(redirect_field_name='/grader')
 def add_test_case(request, assignment_name, success_message=None, failure_message=None):
 	logger.debug(f'Add test case checking for assignment: {assignment_name}')
 	get_object_or_404(Assignment, assignment_name=assignment_name)
@@ -279,18 +306,19 @@ def add_test_case(request, assignment_name, success_message=None, failure_messag
 			logger.debug('Valid add test case form')
 			try:
 				logger.debug(f'Adding test case to {assignment_name}')
-				add_test_case_db(form)
+				add_test_case_db(form, assignment_name)
 				return add_test_case(request, assignment_name, success_message='Successfully Added Test Case')
 			except Exception as e:
 				logger.info(f'Error adding test case to {assignment_name}: {str(e)}')
-				return add_test_case(request, assignment_name, str(e))
+				return add_test_case(request, assignment_name, failure_message=str(e))
 		logger.debug(f'Invalid add test case form: {error_list_from_form(form)}')
-		return add_test_case(request, assignment_name, error_list_from_form(form))
+		return add_test_case(request, assignment_name, failure_message=error_list_from_form(form))
 
 	logger.debug('Serving add test case')
 	form = AddTestCaseForm()
 	context = {
-		'form': form
+		'form': form,
+		'assignment_name': assignment_name
 	}
 	if success_message:
 		context['success_message'] = success_message

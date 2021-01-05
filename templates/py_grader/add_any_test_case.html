@@ -10,12 +10,12 @@
         }
     </style>
     <meta charset="UTF-8">
-    <title>Add Test Case: {{ assignment_name }}</title>
+    <title>Add Test Case</title>
 </head>
 
 <body style="margin: 0; padding: 50px">
 <h1>PyGrader</h1>
-<h1>Add Test Case: {{ assignment_name }}</h1>
+<h1>Add a Test Case</h1>
 
 {% if success_message %}
     <br>
@@ -32,12 +32,12 @@
 <br>
 <br>
 
-<form action="/grader/add_test_case/{{ assignment_name }}" method="post" enctype="multipart/form-data">
+<p>Choose an Assignment:</p>
+<form action="/grader/add_any_test_case_get/">
     {% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Add">
+    <input type="submit" value="Go">
 </form>
-
 </body>
 
 <footer>

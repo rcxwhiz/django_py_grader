@@ -46,7 +46,9 @@ urlpatterns = [
 	     name='view_assignment_results'),
 
 	path('grader/create_assignment/', views.create_assignment, name='create_assignment'),
-	path('grader/assignments', views.assignments, name='assignments'),
+	path('grader/assignments/', views.assignments, name='assignments'),
+	path('grader/add_test_case/', views.add_any_test_case, name='add_any_test_case'),
+	path('grader/add_any_test_case_get/', views.add_any_test_case_get, name='add_any_test_case_get'),
 	path('grader/add_test_case/<str:assignment_name>', views.add_test_case, name='add_test_case'),
 
 	path('grader/manage_net_ids/', views.manage_net_ids, name='manage_net_ids'),

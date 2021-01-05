@@ -37,14 +37,13 @@ class CreateAssignmentForm(forms.Form):
 
 
 class AddTestCaseForm(forms.Form):
-	assignment_name = forms.ModelChoiceField(label='Assignment', queryset=Assignment.objects.order_by('close_time'),
-	                                         to_field_name='assignment_name')
 	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea)
-	test_case_files = forms.FileField(widget=forms.ClearableFileInput(attrs={'multiple': True}))
+	test_case_files = forms.FileField(label='Upload Test Case Files',
+	                                  widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
 	def clean(self):
 		cleaned_data = super().clean()
-		for file in cleaned_data.getlist('test_case_files'):
+		for file in self.files.getlist('test_case_files'):
 			if file.size > cfg.upload_limit:
 				self.add_error('test_case_files', f'{file.name} Over {cfg.upload_limit / 1e6} MB')
 		return cleaned_data

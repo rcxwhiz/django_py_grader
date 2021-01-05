@@ -256,24 +256,25 @@ def clear_net_id_db():
 	NetID.objects.all().delete()
 
 
-def add_test_case_db(form):
+def add_test_case_db(form, assignment_name):
 	data = form.cleaned_data
-	logger.info(f'Adding test case for assignment: {data.get("assignment_name")}')
+	logger.info(f'Adding test case for assignment: {assignment_name}')
 	test_case = TestCase()
-	assignment = Assignment.objects.get(assignment_name=data.get('assignment_name'))
+	assignment = Assignment.objects.get(assignment_name=assignment_name)
 	test_case.assignment = assignment
 	assignment.number_test_cases += 1
 	test_case.test_case_number = assignment.number_test_cases
 	test_case.test_case_input = data.get('test_case_input')
-	logger.debug(f'Populated fields for test case: {test_case.test_case_number}')
+	logger.debug(f'Populated fields for test case: {test_case.test_case_number} and saving')
+
+	test_case.save()
 
 	logger.debug('Creating test file entries for test case')
-	for file in data.getlist('test_case_files'):
+	for file in form.files.getlist('test_case_files'):
 		t_file = TestCaseFile()
 		t_file.test_case = test_case
 		t_file.test_case_file = file
 		t_file.save()
 
-	logger.debug('Saving test case and assignment')
-	test_case.save()
+	logger.debug('Assignment')
 	assignment.save()
