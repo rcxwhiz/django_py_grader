@@ -17,6 +17,9 @@ from django.contrib import admin
 from django.urls import include, path
 
 from py_grader import views
+from py_grader.handler import add_grading_methods_to_db
+
+add_grading_methods_to_db()
 
 urlpatterns = [
 	# site utils

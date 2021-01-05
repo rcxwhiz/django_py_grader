@@ -3,10 +3,11 @@ import os
 from datetime import datetime
 
 import pandas as pd
+from django.db import IntegrityError
 
 from py_grader.docker_tools import CodeRunner
 from py_grader.models import Assignment, NumberSubmissions, NetID, TestCase, SubmissionCaseResult, \
-	Submission, SubmissionResult, TestCaseFile
+	Submission, SubmissionResult, TestCaseFile, GradingMethod
 
 logger = logging.getLogger(__name__)
 
@@ -278,3 +279,16 @@ def add_test_case_db(form, assignment_name):
 
 	logger.debug('Assignment')
 	assignment.save()
+
+
+grading_methods = ['ALL_OR_NOTHING', 'FRACTION', 'FRACTION_SEQUENTIAL', 'COMPLETION']
+
+
+def add_grading_methods_to_db():
+	for grading_method in grading_methods:
+		method = GradingMethod()
+		method.grading_method = grading_method
+		try:
+			method.save()
+		except IntegrityError:
+			pass

@@ -63,7 +63,7 @@ class NumberSubmissions(models.Model):
 class TestCase(models.Model):
 	assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE, verbose_name='Assignment')
 	test_case_number = models.IntegerField(verbose_name='Test Case Number')
-	test_case_input = models.TextField(verbose_name='Test Case Input')
+	test_case_input = models.TextField(verbose_name='Test Case Input', blank=True)
 	test_case_output = models.TextField(verbose_name='Test Case Output')
 
 	def __str__(self):

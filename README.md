@@ -75,15 +75,11 @@ A page that shows a success message on successful operations.
 A page the shows a failure message on successful operations.
 
 ## TODO:
-* Finish create test case functionality
 * Test basic functionality
 * Honestly all the testing after that
 * A nice way for someone to deploy this
 * Make test submit selection page
 * Make a page to view current NetIDs
     * It would be cool if there could be one page for viewing and adding/removing IDs
-
-* I need to find a way to fix constructors of forms
 * Make a grader version of the view submission result that is identifying
 * Investigate db indexing for performance benefits
-* Create or use a loggin system

@@ -37,7 +37,7 @@ class CreateAssignmentForm(forms.Form):
 
 
 class AddTestCaseForm(forms.Form):
-	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea)
+	test_case_input = forms.CharField(label='Test Case argv', widget=forms.Textarea, required=False)
 	test_case_files = forms.FileField(label='Upload Test Case Files',
 	                                  widget=forms.ClearableFileInput(attrs={'multiple': True}))
 
