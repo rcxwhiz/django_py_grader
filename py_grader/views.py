@@ -25,7 +25,7 @@ def grader_index(request):
 	logger.debug('Serving grader index')
 	context = {
 	}
-	return render(request, 'py_grader/grader_index.html', context)
+	return render(request, 'py_grader/grader/index/index.html', context)
 
 
 def submit(request, success_message=None, failure_message=None):

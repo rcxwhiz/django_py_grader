@@ -298,7 +298,7 @@ def add_test_case_db(form, assignment_name):
 	assignment.save()
 
 
-grading_methods = ['ALL_OR_NOTHING', 'FRACTION', 'FRACTION_SEQUENTIAL', 'COMPLETION']
+grading_methods = ['ALL OR NOTHING', 'FRACTION', 'FRACTION SEQUENTIAL', 'COMPLETION']
 
 
 def add_grading_methods_to_db():
