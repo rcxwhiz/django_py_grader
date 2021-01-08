@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
 	'pygrader.joshbedwell.com',
-	'66.219.252.33'
+	'66.219.252.33',
+	'desktop-dbb75l5'
 ]
 
 # Application definition

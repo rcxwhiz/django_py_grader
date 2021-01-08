@@ -1,0 +1,25 @@
+.container {
+    max-width: 960px;
+}
+
+main {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.py-5 {
+    max-width: 600px;
+}
+
+.needs-validation input[type="text"] {
+    margin-bottom: 10px;
+}
+
+.lh-condensed {
+    line-height: 1.25;
+}

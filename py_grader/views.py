@@ -3,6 +3,7 @@ import logging
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 
+import py_grader.config as cfg
 from py_grader.forms import CreateAssignmentForm, SubmitAssignmentForm, ChooseAssignmentForm, SubmitPyFile, \
 	ViewSubmissionForm, NetIDNameForm, CSVFileForm, AddTestCaseForm, NetIDForm
 from py_grader.handler import process_assignment, process_submission, process_test_submission, add_net_id_db, \
@@ -78,13 +79,14 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 	assignment = get_object_or_404(Assignment, assignment_name=assignment_name)
 	context = {
 		'form': form,
-		'assignment': assignment
+		'assignment': assignment,
+		'upload_limit': cfg.upload_limit_mbytes
 	}
 	if success_message:
 		context['success_message'] = success_message
 	if failure_message:
 		context['failure_message'] = failure_message
-	return render(request, 'py_grader/submit_assignment.html', context)
+	return render(request, 'py_grader/student/submit/submit_assignment.html', context)
 
 
 def test_submit(request, success_message=None, failure_message=None):

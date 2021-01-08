@@ -27,8 +27,8 @@ class CreateAssignmentForm(forms.Form):
 		code = cleaned_data.get('key_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('key_source_code', 'File Type Must be .py')
-		if code.size > cfg.upload_limit:
-			self.add_error('key_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
+		if code.size > cfg.upload_limit_bytes:
+			self.add_error('key_source_code', f'File Over {cfg.upload_limit_mbytes} MB')
 		open_time = cleaned_data.get('open_time')
 		close_time = cleaned_data.get('close_time')
 		if open_time > close_time:
@@ -44,8 +44,8 @@ class AddTestCaseForm(forms.Form):
 	def clean(self):
 		cleaned_data = super().clean()
 		for file in self.files.getlist('test_case_files'):
-			if file.size > cfg.upload_limit:
-				self.add_error('test_case_files', f'{file.name} Over {cfg.upload_limit / 1e6} MB')
+			if file.size > cfg.upload_limit_bytes:
+				self.add_error('test_case_files', f'{file.name} Over {cfg.upload_limit_mbytes} MB')
 		return cleaned_data
 
 
@@ -68,8 +68,8 @@ class SubmitAssignmentForm(forms.Form):
 		code = cleaned_data.get('student_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('student_source_code', 'File Type Must be .py')
-		if code.size > cfg.upload_limit:
-			self.add_error('student_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
+		if code.size > cfg.upload_limit_bytes:
+			self.add_error('student_source_code', f'File Over {cfg.upload_limit_mbytes} MB')
 		return cleaned_data
 
 
@@ -81,8 +81,8 @@ class SubmitPyFile(forms.Form):
 		code = cleaned_data.get('source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('source_code', 'File Type Must be .py')
-		if code.size > cfg.upload_limit:
-			self.add_error('student_source_code', f'File Over {cfg.upload_limit / 1e6} MB')
+		if code.size > cfg.upload_limit_bytes:
+			self.add_error('student_source_code', f'File Over {cfg.upload_limit_mbytes} MB')
 		return cleaned_data
 
 
@@ -113,6 +113,6 @@ class CSVFileForm(forms.Form):
 		csv = cleaned_data.get('csv_file')
 		if not csv.name.endswith('.csv'):
 			self.add_error('csv_file', 'File Type Must be .csv')
-		if csv.size > cfg.upload_limit:
-			self.add_error('csv_file', f'File Over {cfg.upload_limit / 1e6} MB')
+		if csv.size > cfg.upload_limit_bytes:
+			self.add_error('csv_file', f'File Over {cfg.upload_limit_mbytes} MB')
 		return cleaned_data

@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="author" content="Josh Bedwell">
     <meta name="generator" content="Jekyll v4.1.1">
-    <title>PyGrader Home</title>
+    <title>Submit Assignment</title>
 
     <style>
         .bd-placeholder-img {
@@ -30,9 +30,9 @@
         }
     </style>
     <!-- Custom styles for this template -->
-    {#    <link href="{% static 'page-css/py_grader/student/index/index.css' %}" rel="stylesheet">#}
+    <link href="{% static 'page-css/py_grader/student/submit/form-validation.css' %}" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 <header>
     <div class="collapse bg-dark" id="navbarHeader">
         <div class="container">
@@ -46,8 +46,8 @@
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4 class="text-white">Links</h4>
                     <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Home</a></li>
-                        <li><a href="/submit" class="text-white">Submit</a></li>
+                        <li><a href="/" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Submit</a></li>
                         <li><a href="/view_submission_result" class="text-white">View Submission</a></li>
                         <li><a href="/grader" class="text-white">Instructor Login</a></li>
                     </ul>
@@ -57,7 +57,7 @@
     </div>
     <div class="navbar navbar-dark bg-dark shadow-sm">
         <div class="container d-flex justify-content-between">
-            <a href="#" class="navbar-brand d-flex align-items-center">
+            <a href="/" class="navbar-brand d-flex align-items-center">
                 <img class="mr-2" src="{% static 'assets/logo-outline.svg' %}" alt="" width="20" height="20">
                 <strong>PyGrader</strong>
             </a>
@@ -68,56 +68,33 @@
         </div>
     </div>
 </header>
-
 <main role="main">
-
-    <section class="jumbotron text-center">
-        <div class="container">
-            <h1>PyGrader Student Home</h1>
-            <p class="lead text-muted">A system for automatically grading Python code used by {{ institution }}</p>
-        </div>
-    </section>
-
-    <div class="album py-5 bg-light">
-        <div class="container">
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm" style="cursor: pointer;" onclick="window.location='/submit';">
-                        <div class="card-header">
-                            <h2>Submit</h2>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">Submit a Python file for an assignment.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm" style="cursor: pointer;"
-                         onclick="window.location='/view_submission_result';">
-                        <div class="card-header">
-                            <h2>View Submission</h2>
-                        </div>
-                        <div class="card-body">
-                            <p class="card-text">View a submission result with a submission ID and see which test cases
-                                pass and the resulting grade.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="py-5 text-center">
+        <img class="d-block mx-auto mb-4" src="{% static 'assets/logo-solid.svg' %}" alt="" width="72" height="72">
+        <h2>Submit Assignment: {{ assignment }}</h2>
+        <p class="lead">Submit a .py file for {{ assignment }}. This assignment
+            allows {{ assignment.number_submissions_allowed }} submissions and uses grading
+            method {{ assignment.grading_method }}.</p>
     </div>
-
+    <form class="needs-validation" novalidate>
+        <label for="inputNetid">NetID</label>
+        <input type="text" class="form-control" id="inputNetid" name="net_id" placeholder="cougar98"
+               required>
+        <div class="invalid-feedback">
+            Please enter a valid NetID.
+        </div>
+        <label for="inputStudentFile">Python file</label>
+        <input type="file" class="form-control-file" id="inputStudentFile" name="student_source_code" required>
+        <div class="invalid-feedback">
+            Please upload a .py file less than {{ upload_limit }} MB.
+        </div>
+        <hr class="mb-4">
+        <button class="btn btn-primary btn-lg btn-block" type="submit">Submit</button>
+    </form>
+    <footer class="my-5 pt-5 text-muted text-center text-small">
+        <p class="mb-1">&copy; 2020-2021 Josh Bedwell</p>
+    </footer>
 </main>
-
-<footer class="text-muted">
-    <div class="container">
-        <p class="float-right">
-            <a href="#">Back to top</a>
-        </p>
-        <p>Josh Bedwell &copy; 2020-2021
-            <a rel="noreferrer nopener" href="/https://github.com/rcxwhiz/django_py_grader" target="_blank">Github</a>
-        </p>
-    </div>
-</footer>
+<script src="{% static 'page-css/py_grader/student/submit/form-validation.js' %}"></script>
+</body>
 </html>
