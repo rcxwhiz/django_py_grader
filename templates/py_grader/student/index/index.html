@@ -1,3 +1,7 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,11 +12,8 @@
     <meta name="generator" content="Jekyll v4.1.1">
     <title>PyGrader Home</title>
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.5/examples/album/">
-
     <!-- Bootstrap core CSS -->
     {% load static %}
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
     <style>
         .bd-placeholder-img {
@@ -121,10 +122,4 @@
         </p>
     </div>
 </footer>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-<script>window.jQuery || document.write('<script src="../assets/js/vendor/jquery.slim.min.js"><\/script>')</script>
-{#<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>#}
-<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 </html>
