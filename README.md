@@ -81,3 +81,4 @@ A page the shows a failure message on successful operations.
 * Make test submit selection page
 * Make a grader version of the view submission result that is identifying
 * Investigate db indexing for performance benefits
+* Use bootstrap 4 on all the web pages

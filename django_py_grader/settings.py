@@ -121,6 +121,13 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = BASE_DIR / 'root'
+
+STATICFILES_DIRS = [
+	BASE_DIR / 'static',
+	BASE_DIR / 'boot'
+]
+
 BOOTSTRAP4 = {
 	'include_jquery': True
 }

@@ -25,4 +25,4 @@ def check_file_set(student_submissions):
 			score = (student_pair[0], student_pair[1], sim_score)
 			plagiarism_results.add(score)
 
-	return plagiarism_results
+	return sorted(list(plagiarism_results), key=lambda sub: -sub[2])
