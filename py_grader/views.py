@@ -20,6 +20,7 @@ def index(request):
 	return render(request, 'py_grader/index.html', context)
 
 
+@login_required(redirect_field_name='/grader')
 def grader_index(request):
 	logger.debug('Serving grader index')
 	context = {

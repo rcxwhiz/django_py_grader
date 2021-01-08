@@ -27,7 +27,8 @@ SECRET_KEY = django_py_grader.secret_key.SECRET_KEY
 DEBUG = True
 
 ALLOWED_HOSTS = [
-	'pygrader.joshbedwell.com'
+	'pygrader.joshbedwell.com',
+	'66.219.252.33'
 ]
 
 # Application definition
