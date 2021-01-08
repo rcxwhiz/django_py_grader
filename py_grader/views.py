@@ -30,15 +30,15 @@ def grader_index(request):
 
 def submit(request, success_message=None, failure_message=None):
 	logger.debug('Serving submit menu')
-	form = ChooseAssignmentForm()
+	# form = ChooseAssignmentForm()
 	context = {
-		'form': form
+		'assignments': Assignment.objects.order_by('close_time')
 	}
 	if success_message:
 		context['success_message'] = success_message
 	if failure_message:
 		context['failure_message'] = failure_message
-	return render(request, 'py_grader/submit.html', context)
+	return render(request, 'py_grader/student/submit/index.html', context)
 
 
 def submit_get(request):
@@ -46,9 +46,9 @@ def submit_get(request):
 	form = ChooseAssignmentForm(request.GET)
 	if form.is_valid():
 		logger.debug('Valid submit assignment menu form')
-		get_object_or_404(Assignment, assignment_name=form.assignment_name)
-		logger.debug(f'Found assignment: {form.assignment_name}')
-		return redirect(f'submit/{form.assignment_name}/')
+		get_object_or_404(Assignment, assignment_name=form.cleaned_data['assignment_name'])
+		logger.debug(f'Found assignment: {form.cleaned_data["assignment_name"]}')
+		return redirect(f'/submit/{form.cleaned_data["assignment_name"]}/')
 	logger.debug(f'Invalid submit assignment menu form: {error_list_from_form(form)}')
 	return submit(request, failure_message=error_list_from_form(form))
 
