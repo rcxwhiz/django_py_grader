@@ -17,7 +17,7 @@ def index(request):
 	logger.debug('Serving student index')
 	context = {
 	}
-	return render(request, 'py_grader/index.html', context)
+	return render(request, 'py_grader/student/index/index.html', context)
 
 
 @login_required(redirect_field_name='/grader')
