@@ -80,20 +80,20 @@
         {% endif %}
         {% if failure_message %}
             <h2 class="text-danger">{{ failure_message }}</h2>
-            <h4>{{ support_email }}</h4>
+            <p>{{ support_email }}</p>
         {% endif %}
     </div>
     <form class="needs-validation" action="/submit/{{ assignment.assignment_name }}/" method="post"
           enctype="multipart/form-data">
         {% csrf_token %}
         <label for="inputNetid">NetID</label>
-        <input type="text" class="form-control" id="inputNetid" name="net_id" placeholder="cougar98"
+        <input type="text" class="form-control" id="inputNetid" name="net_id" placeholder="NetID"
                required>
         <div class="invalid-feedback">
             Please enter a valid NetID.
         </div>
         <label for="inputStudentFile">Python file</label>
-        <input type="file" class="form-control-file" id="inputStudentFile" name="student_source_code" required>
+        <input type="file" class="form-control-file" id="inputStudentFile" name="student_source_code">
         <div class="invalid-feedback">
             Please upload a .py file less than {{ upload_limit }} MB.
         </div>
@@ -104,6 +104,5 @@
         <p class="mb-1">&copy; 2020-2021 Josh Bedwell</p>
     </footer>
 </main>
-<script src="{% static 'page-css/py_grader/student/submit/form-validation.js' %}"></script>
 </body>
 </html>

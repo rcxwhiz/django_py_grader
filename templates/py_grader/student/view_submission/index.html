@@ -1,0 +1,75 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Josh Bedwell">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>View Submission</title>
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'page-css/py_grader/student/view_submission/index.css' %}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">About</h4>
+                    <p class="text-muted">I developed this tool on my own after being a teacher's asistant for a while
+                        and getting tired of manually grading code for some classes. It uses Django and Bootstrap and
+                        it's my first web project.</p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="/" class="text-white">Home</a></li>
+                        <li><a href="/submit" class="text-white">Submit</a></li>
+                        <li><a href="#" class="text-white">View Submission</a></li>
+                        <li><a href="/grader" class="text-white">Instructor Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a href="/" class="navbar-brand d-flex align-items-center">
+                <img class="mr-2" src="{% static 'assets/logo-outline.svg' %}" alt="" width="20" height="20">
+                <strong>PyGrader</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main role="main" class="container">
+    <section class="text-center">
+        <form class="form-signin" action="/view_submission_result_get/">
+            {% csrf_token %}
+            <img class="mb-4" src="{% static 'assets/logo-solid.svg' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 font-weight-normal">Enter a submission number</h1>
+            <label for="inputSubmissionId"></label>
+            <input class="form-control" type="number" id="inputSubmissionId" name="submission_number" min="0" value="0"
+                   required>
+            <div class="invalid-feedback">
+                Please enter a submission number.
+            </div>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Go</button>
+            <p class="mt-5 mb-3 text-muted">Josh Bedwell &copy; 2020-2021</p>
+        </form>
+    </section>
+</main>
+</body>
+
+</html>

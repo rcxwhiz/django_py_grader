@@ -206,7 +206,7 @@ def view_any_submission_result(request, success_message=None, failure_message=No
 		context['success_message'] = success_message
 	if failure_message:
 		context['failure_message'] = failure_message
-	return render(request, 'py_grader/view_any_submission_result.html', context)
+	return render(request, 'py_grader/student/view_submission/index.html', context)
 
 
 def view_any_submission_result_get(request):
@@ -214,9 +214,9 @@ def view_any_submission_result_get(request):
 	form = ViewSubmissionForm(request.GET)
 	if form.is_valid():
 		logger.debug('Valid view submission result menu form')
-		get_object_or_404(SubmissionResult, pk=form.submission_number)
-		logger.debug(f'Found submission result: {form.submission_number}')
-		return redirect(f'view_submission_result/{form.submission_number}/')
+		get_object_or_404(SubmissionResult, pk=form.cleaned_data['submission_number'])
+		logger.debug(f'Found submission result: {form.cleaned_data["submission_number"]}')
+		return redirect(f'view_submission_result/{form.cleaned_data["submission_number"]}/')
 	logger.debug(f'Invalid view submission result menu form: {error_list_from_form(form)}')
 	return view_any_submission_result(request, failure_message=error_list_from_form(form))
 
