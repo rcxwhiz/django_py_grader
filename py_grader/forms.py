@@ -65,7 +65,7 @@ class SubmitAssignmentForm(forms.Form):
 			NetID.objects.get(net_id=net_id)
 		except NetID.DoesNotExist:
 			self.add_error('net_id', 'NetID Not Found')
-		code = cleaned_data.get('student_source_code')
+		code = self.files.get('student_source_code')
 		if not code.name.endswith('.py'):
 			self.add_error('student_source_code', 'File Type Must be .py')
 		if code.size > cfg.upload_limit_bytes:

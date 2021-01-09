@@ -64,13 +64,14 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 			get_object_or_404(Assignment, assignment_name=assignment_name)
 			logger.debug(f'Found assignment: {assignment_name}')
 			try:
-				logger.debug(f'Processing assignment submission - assignment: {assignment_name}, NetID: {form.net_id}')
+				logger.debug(
+					f'Processing assignment submission - assignment: {assignment_name}, NetID: {form.cleaned_data["net_id"]}')
 				submission_result_id = process_submission(form, assignment_name, request.META['REMOTE_ADDR'])
 				return redirect(f'view_submission_result/{submission_result_id}')
 			except Exception as e:
 				logging.info(
-					f'Error processing assignemnt submission - assignment: {assignment_name}, NetID: {form.net_id}, e: {str(e)}')
-				return submit_assignment(request, assignment_name, failure_message=str(e))
+					f'Error processing assignemnt submission - assignment: {assignment_name}, NetID: {form.cleaned_data["net_id"]}, e: {e}')
+				return submit_assignment(request, assignment_name, failure_message=f'Internal Error: {e}')
 		logger.debug(f'Invalid submit assignment form: {error_list_from_form(form)}')
 		return submit_assignment(request, assignment_name, failure_message=error_list_from_form(form))
 
@@ -80,7 +81,8 @@ def submit_assignment(request, assignment_name, success_message=None, failure_me
 	context = {
 		'form': form,
 		'assignment': assignment,
-		'upload_limit': cfg.upload_limit_mbytes
+		'upload_limit': cfg.upload_limit_mbytes,
+		'support_email': cfg.bad_email
 	}
 	if success_message:
 		context['success_message'] = success_message

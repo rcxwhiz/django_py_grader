@@ -107,7 +107,7 @@ def process_submission(form, assignment_name, ip_address):
 	submission.submission_source_code = code_text
 	logger.debug('Populating other submission fields')
 	submission.submission_time = datetime.now()
-	num_submissions = NumberSubmissions.objects.filter(net_id=net_id, assignment=assignment)
+	num_submissions = NumberSubmissions.objects.filter(net_id=net_id, assignment=assignment).get()
 	submission.submission_number = num_submissions.number_submissions + 1
 	submission.ip_address = ip_address
 	logger.debug('Saving submission')

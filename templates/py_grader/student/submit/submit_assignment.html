@@ -75,8 +75,17 @@
         <p class="lead">Submit a .py file for {{ assignment }}. This assignment
             allows {{ assignment.number_submissions_allowed }} submissions and uses grading
             method {{ assignment.grading_method }}.</p>
+        {% if success_message %}
+            <h2 class="text-success">{{ success_message }}</h2>
+        {% endif %}
+        {% if failure_message %}
+            <h2 class="text-danger">{{ failure_message }}</h2>
+            <h4>{{ support_email }}</h4>
+        {% endif %}
     </div>
-    <form class="needs-validation" novalidate>
+    <form class="needs-validation" action="/submit/{{ assignment.assignment_name }}/" method="post"
+          enctype="multipart/form-data">
+        {% csrf_token %}
         <label for="inputNetid">NetID</label>
         <input type="text" class="form-control" id="inputNetid" name="net_id" placeholder="cougar98"
                required>

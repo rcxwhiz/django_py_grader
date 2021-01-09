@@ -83,3 +83,4 @@ A page the shows a failure message on successful operations.
 * Investigate db indexing for performance benefits
 * Use bootstrap 4 on all the web pages
 * Make sure colors are consistent
+* Add success/fail messages to new bootstrap pages
