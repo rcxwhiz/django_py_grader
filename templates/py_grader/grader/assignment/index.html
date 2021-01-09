@@ -1,0 +1,118 @@
+{% load bootstrap4 %}
+{% bootstrap_css %}
+{% bootstrap_javascript jquery='full' %}
+{% load static %}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Josh Bedwell">
+    <meta name="generator" content="Jekyll v4.1.1">
+    <title>Assignments</title>
+
+    <style>
+        .bd-placeholder-img {
+            font-size: 1.125rem;
+            text-anchor: middle;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        @media (min-width: 768px) {
+            .bd-placeholder-img-lg {
+                font-size: 3.5rem;
+            }
+        }
+    </style>
+    <!-- Custom styles for this template -->
+    {#    <link href="{% static 'page_css/py_grader/grader/assignment/dashboard.css' %}" rel="stylesheet">#}
+</head>
+<body>
+<header>
+    <div class="collapse bg-dark" id="navbarHeader">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-8 col-md-7 py-4">
+                    <h4 class="text-white">About</h4>
+                    <p class="text-muted">I developed this tool on my own after being a teacher's asistant for a while
+                        and getting tired of manually grading code for some classes. It uses Django and Bootstrap and
+                        it's my first web project.</p>
+                </div>
+                <div class="col-sm-4 offset-md-1 py-4">
+                    <h4 class="text-white">Links</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="/grader" class="text-white">Instructor Home</a></li>
+                        <li><a href="/grader/create_assignment" class="text-white">Create Assignment</a></li>
+                        <li><a href="/grader/test_submit" class="text-white">Test Submit Assignment</a></li>
+                        <li><a href="#" class="text-white">View Assignments</a></li>
+                        <li><a href="/grader/view_submission_result" class="text-white">View Submission</a></li>
+                        <li><a href="/manage_net_ids" class="text-white">Manage NetIDs</a></li>
+                        <li><a href="/" class="text-white">Student Home</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            <a href="/grader" class="navbar-brand d-flex align-items-center">
+                <img class="mr-2" src="{% static 'assets/logo-outline.svg' %}" alt="" width="20" height="20">
+                <strong>PyGrader Instructor</strong>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main role="main" class="container">
+    <section>
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
+            <h1 class="h2">Assignments</h1>
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group mr-2">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">Create New</button>
+                </div>
+            </div>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Students Submitted</th>
+                    <th>Total Submissions</th>
+                    <th>Opens</th>
+                    <th>Closes</th>
+                    <th>View Submissions</th>
+                    <th>Download Report</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for assignment in assignments %}
+                    <tr>
+                        <td>{{ assignment.assignment_name }}</td>
+                        <td>{{ assignment.number_students_submitted }}/{{ number_students }}</td>
+                        <td>{{ assignment.total_submissions }}</td>
+                        <td>{{ assignment.open_time }}</td>
+                        <td>{{ assignment.close_time }}</td>
+                        <td>Link</td>
+                        <td>Link</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+<script src="{% static 'page_css/py_grader/grader/assignment/dashboard.js' %}"></script>
+</body>
+</html>

@@ -464,6 +464,7 @@ def clear_net_id(request, success_message=None, failure_message=None):
 def assignments(request):
 	logger.debug('Serving View Assignments')
 	context = {
-		'assignments': Assignment.objects.order_by('close_time')
+		'assignments': Assignment.objects.order_by('close_time'),
+		'number_students': NetID.objects.all().count()
 	}
-	return render(request, 'py_grader/view_assignments.html', context)
+	return render(request, 'py_grader/grader/assignment/index.html', context)
