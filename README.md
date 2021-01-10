@@ -87,3 +87,8 @@ A page the shows a failure message on successful operations.
 * Fix outline logo
 * Get real form validation working
 * Create favicon
+* Change system to not record each test case for each submission, just a submission grade and a message as text
+
+* Could add support for other languages with just a code runner package
+* Could add support for multiple courses with a landing page and coded urls
+* Could allow uploading multiple files of any type on the file uploads
